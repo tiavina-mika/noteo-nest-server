@@ -23,8 +23,11 @@ export class FolderResolver {
   }
 
   @Mutation((returns) => Folder)
-  async updateFolder(@Args('values') values: UpdateFolderInput) {
-    return this.folderService.update(values);
+  async updateFolder(
+    @Args('id') id: string,
+    @Args('values') values: UpdateFolderInput,
+  ) {
+    return this.folderService.update(id, values);
   }
 
   @Mutation((returns) => Folder)

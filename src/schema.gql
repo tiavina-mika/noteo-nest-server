@@ -10,6 +10,7 @@ input CreateFolderInput {
 
 input CreateNoteInput {
   content: String!
+  folder: String!
   title: String!
 }
 
@@ -34,8 +35,9 @@ type Mutation {
   createNote(values: CreateNoteInput!): Note!
   deleteFolder(id: String!): Folder!
   deleteNote(id: String!): Note!
-  updateFolder(values: UpdateFolderInput!): Folder!
-  updateNote(values: UpdateNoteInput!): Note!
+  deleteNotesByFolder(folderId: String!): Note!
+  updateFolder(id: String!, values: UpdateFolderInput!): Folder!
+  updateNote(id: String!, values: UpdateNoteInput!): Note!
 }
 
 type Note {
@@ -44,6 +46,7 @@ type Note {
 
   """Created At"""
   createdAt: DateTime!
+  folder: Folder!
   title: String!
 
   """Updated At"""
@@ -57,12 +60,10 @@ type Query {
 }
 
 input UpdateFolderInput {
-  id: String!
   name: String!
 }
 
 input UpdateNoteInput {
   content: String!
-  id: String!
   title: String!
 }

@@ -7,13 +7,13 @@ export class CreateNoteInput {
 
   @Field()
   content: string;
+
+  @Field()
+  folder: String;
 }
 
 @InputType()
 export class UpdateNoteInput {
-  @Field()
-  id: string;
-
   @Field()
   title: string;
 
