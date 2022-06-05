@@ -27,9 +27,9 @@ export class FolderService {
     return folder;
   }
 
-  async update(values: UpdateFolderInput) {
+  async update(id: string, values: UpdateFolderInput) {
     return await this.folderModel
-      .findByIdAndUpdate(values.id, values, { new: true })
+      .findByIdAndUpdate(id, values, { new: true })
       .exec();
   }
 

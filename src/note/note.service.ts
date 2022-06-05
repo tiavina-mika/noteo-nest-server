@@ -14,7 +14,7 @@ export class NoteService {
   }
 
   async findAll(): Promise<Note[]> {
-    return await this.noteModel.find().exec();
+    return await this.noteModel.find().populate('folder').exec();
   }
 
   async getById(id: string): Promise<Note> {
@@ -25,9 +25,9 @@ export class NoteService {
     return note;
   }
 
-  async update(values: UpdateNoteInput) {
+  async update(id: string, values: UpdateNoteInput) {
     return await this.noteModel
-      .findByIdAndUpdate(values.id, values, { new: true })
+      .findByIdAndUpdate(id, values, { new: true })
       .exec();
   }
 

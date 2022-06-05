@@ -23,12 +23,20 @@ export class NoteResolver {
   }
 
   @Mutation((returns) => Note)
-  async updateNote(@Args('values') values: UpdateNoteInput) {
-    return this.noteService.update(values);
+  async updateNote(
+    @Args('id') id: string,
+    @Args('values') values: UpdateNoteInput,
+  ) {
+    return this.noteService.update(id, values);
   }
 
   @Mutation((returns) => Note)
   async deleteNote(@Args('id') id: string) {
+    return this.noteService.delete(id);
+  }
+
+  @Mutation((returns) => Note)
+  async deleteNotesByFolder(@Args('folderId') id: string) {
     return this.noteService.delete(id);
   }
 }

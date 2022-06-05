@@ -9,8 +9,5 @@ export class CreateFolderInput {
 @InputType()
 export class UpdateFolderInput {
   @Field()
-  id: string;
-
-  @Field()
   name: string;
 }
