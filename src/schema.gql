@@ -4,6 +4,10 @@
 
 directive @upper on FIELD_DEFINITION
 
+input CreateFolderInput {
+  name: String!
+}
+
 input CreateNoteInput {
   content: String!
   title: String!
@@ -14,9 +18,23 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Folder {
+  _id: String!
+
+  """Created At"""
+  createdAt: DateTime!
+  name: String!
+
+  """Updated At"""
+  updatedAt: DateTime!
+}
+
 type Mutation {
+  createFolder(values: CreateFolderInput!): Folder!
   createNote(values: CreateNoteInput!): Note!
+  deleteFolder(id: String!): Folder!
   deleteNote(id: String!): Note!
+  updateFolder(values: UpdateFolderInput!): Folder!
   updateNote(values: UpdateNoteInput!): Note!
 }
 
@@ -33,8 +51,14 @@ type Note {
 }
 
 type Query {
-  getById(id: String!): Note!
+  getById(id: String!): Folder!
+  getFolders: [Folder!]!
   getNotes: [Note!]!
+}
+
+input UpdateFolderInput {
+  id: String!
+  name: String!
 }
 
 input UpdateNoteInput {
