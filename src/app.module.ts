@@ -11,6 +11,7 @@ import { DirectiveLocation, GraphQLDirective } from 'graphql';
 import { upperDirectiveTransformer } from './common/directive/upper-case.directive';
 import { join } from 'path';
 import { MongooseModule } from '@nestjs/mongoose';
+import { FolderModule } from './folder/folder.module';
 
 @Module({
   imports: [
@@ -34,8 +35,11 @@ import { MongooseModule } from '@nestjs/mongoose';
     }),
     MongooseModule.forRoot(process.env.DB_URL),
     NoteModule,
+    FolderModule,
+    // FolderModule,
   ],
   controllers: [AppController],
   providers: [AppService],
+  // providers: [AppService, FolderService],
 })
 export class AppModule {}
