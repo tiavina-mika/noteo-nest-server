@@ -1,0 +1,44 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+directive @upper on FIELD_DEFINITION
+
+input CreateNoteInput {
+  content: String!
+  title: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Mutation {
+  createNote(values: CreateNoteInput!): Note!
+  deleteNote(id: String!): Note!
+  updateNote(values: UpdateNoteInput!): Note!
+}
+
+type Note {
+  _id: String!
+  content: String!
+
+  """Created At"""
+  createdAt: DateTime!
+  title: String!
+
+  """Updated At"""
+  updatedAt: DateTime!
+}
+
+type Query {
+  getById(id: String!): Note!
+  getNotes: [Note!]!
+}
+
+input UpdateNoteInput {
+  content: String!
+  id: String!
+  title: String!
+}
