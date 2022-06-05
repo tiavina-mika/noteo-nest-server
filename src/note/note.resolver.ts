@@ -18,8 +18,13 @@ export class NoteResolver {
   }
 
   @Query((returns) => Note)
-  async getById(@Args('id') id: string) {
+  async getNoteById(@Args('id') id: string) {
     return this.noteService.getById(id);
+  }
+
+  @Query((returns) => [Note])
+  async getNotesByFolderId(@Args('folderId') folderId: string) {
+    return this.noteService.getByFolderId(folderId);
   }
 
   @Mutation((returns) => Note)
@@ -32,11 +37,6 @@ export class NoteResolver {
 
   @Mutation((returns) => Note)
   async deleteNote(@Args('id') id: string) {
-    return this.noteService.delete(id);
-  }
-
-  @Mutation((returns) => Note)
-  async deleteNotesByFolder(@Args('folderId') id: string) {
     return this.noteService.delete(id);
   }
 }

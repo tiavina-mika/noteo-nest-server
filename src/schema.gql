@@ -35,7 +35,6 @@ type Mutation {
   createNote(values: CreateNoteInput!): Note!
   deleteFolder(id: String!): Folder!
   deleteNote(id: String!): Note!
-  deleteNotesByFolder(folderId: String!): Note!
   updateFolder(id: String!, values: UpdateFolderInput!): Folder!
   updateNote(id: String!, values: UpdateNoteInput!): Note!
 }
@@ -54,9 +53,11 @@ type Note {
 }
 
 type Query {
-  getById(id: String!): Folder!
+  getFolderById(id: String!): Folder!
   getFolders: [Folder!]!
+  getNoteById(id: String!): Note!
   getNotes: [Note!]!
+  getNotesByFolderId(folderId: String!): [Note!]!
 }
 
 input UpdateFolderInput {

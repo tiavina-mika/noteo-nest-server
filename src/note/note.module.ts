@@ -9,5 +9,6 @@ import { NoteService } from './note.service';
     MongooseModule.forFeature([{ name: Note.name, schema: NoteSchema }]),
   ],
   providers: [NoteService, NoteResolver],
+  exports: [NoteService],
 })
 export class NoteModule {}
