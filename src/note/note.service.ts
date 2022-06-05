@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateNoteInput, UpdateNoteInput } from './note.input';
 import { Note, NoteDocument } from './note.schema';
@@ -25,6 +25,12 @@ export class NoteService {
     return note;
   }
 
+  async getByFolderId(folderId: string): Promise<Note[]> {
+    const notes = await this.noteModel.find({ folder: folderId }).populate('folder').exec();
+
+    return notes;
+  }
+
   async update(id: string, values: UpdateNoteInput) {
     return await this.noteModel
       .findByIdAndUpdate(id, values, { new: true })
@@ -33,5 +39,10 @@ export class NoteService {
 
   async delete(id: string) {
     return await this.noteModel.findByIdAndDelete(id).exec();
+  }
+
+  async deleteMany(ids: any[]) {
+    return await this.noteModel
+      .deleteMany({ _id: { $in: ids }});
   }
 }
