@@ -37,7 +37,7 @@ export class FolderResolver {
   @Mutation((returns) => Folder)
   async deleteFolder(@Args('id') id: string) {
     const notes = await this.noteService.getByFolderId(id);
-    const noteIds: any[] = notes.map((note) => note._id);
+    const noteIds: any[] = notes.map((note) => note.id);
 
     // delete each notes inside the folder
     await this.noteService.deleteMany(noteIds);

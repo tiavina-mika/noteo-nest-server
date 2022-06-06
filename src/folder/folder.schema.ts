@@ -1,6 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { transformMongoDBIdentifier } from 'src/utils/utils';
 
 export type FolderDocument = Folder & Document;
 
@@ -8,7 +9,7 @@ export type FolderDocument = Folder & Document;
 @Schema({ timestamps: true })
 export class Folder {
   @Field(() => String)
-  _id: MongooseSchema.Types.ObjectId;
+  id: MongooseSchema.Types.ObjectId;
 
   @Prop()
   @Field()
@@ -24,3 +25,7 @@ export class Folder {
 }
 
 export const FolderSchema = SchemaFactory.createForClass(Folder);
+
+FolderSchema.set('toJSON', {
+  transform: transformMongoDBIdentifier
+})

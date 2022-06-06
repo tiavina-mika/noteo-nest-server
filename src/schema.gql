@@ -20,10 +20,9 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Folder {
-  _id: String!
-
   """Created At"""
   createdAt: DateTime!
+  id: String!
   name: String!
 
   """Updated At"""
@@ -40,12 +39,12 @@ type Mutation {
 }
 
 type Note {
-  _id: String!
   content: String!
 
   """Created At"""
   createdAt: DateTime!
   folder: Folder!
+  id: String!
   title: String!
 
   """Updated At"""
