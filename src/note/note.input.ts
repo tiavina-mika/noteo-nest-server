@@ -9,7 +9,7 @@ export class CreateNoteInput {
   content: string;
 
   @Field({ nullable: true })
-  folder?: String;
+  folder?: string;
 }
 
 @InputType()

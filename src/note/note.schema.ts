@@ -36,5 +36,5 @@ export class Note {
 export const NoteSchema = SchemaFactory.createForClass(Note);
 
 NoteSchema.set('toJSON', {
-  transform: transformMongoDBIdentifier
-})
+  transform: transformMongoDBIdentifier,
+});

@@ -27,5 +27,5 @@ export class Folder {
 export const FolderSchema = SchemaFactory.createForClass(Folder);
 
 FolderSchema.set('toJSON', {
-  transform: transformMongoDBIdentifier
-})
+  transform: transformMongoDBIdentifier,
+});

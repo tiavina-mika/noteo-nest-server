@@ -30,7 +30,7 @@ export class NoteResolver {
   @Mutation((returns) => Note)
   async updateNote(
     @Args('id') id: string,
-    @Args('values') values: UpdateNoteInput,
+    @Args('values') values: UpdateNoteInput
   ) {
     return this.noteService.update(id, values);
   }
