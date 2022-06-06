@@ -2,6 +2,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Folder } from '../folder/folder.schema';
+import { transformMongoDBIdentifier } from '../utils/utils';
 
 export type NoteDocument = Note & Document;
 
@@ -9,7 +10,7 @@ export type NoteDocument = Note & Document;
 @Schema({ timestamps: true })
 export class Note {
   @Field(() => String)
-  _id: MongooseSchema.Types.ObjectId;
+  id: MongooseSchema.Types.ObjectId;
 
   @Prop()
   @Field()
@@ -33,3 +34,7 @@ export class Note {
 }
 
 export const NoteSchema = SchemaFactory.createForClass(Note);
+
+NoteSchema.set('toJSON', {
+  transform: transformMongoDBIdentifier
+})
