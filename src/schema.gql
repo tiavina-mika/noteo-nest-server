@@ -10,8 +10,8 @@ input CreateFolderInput {
 
 input CreateNoteInput {
   content: String!
-  folder: String!
-  title: String!
+  folder: String
+  title: String
 }
 
 """
@@ -66,5 +66,5 @@ input UpdateFolderInput {
 
 input UpdateNoteInput {
   content: String!
-  title: String!
+  title: String
 }
