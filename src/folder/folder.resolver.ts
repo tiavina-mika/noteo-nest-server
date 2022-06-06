@@ -8,7 +8,7 @@ import { NoteService } from '../note/note.service';
 export class FolderResolver {
   constructor(
     private folderService: FolderService,
-    private noteService: NoteService,
+    private noteService: NoteService
   ) {}
 
   @Mutation((returns) => Folder)
@@ -29,7 +29,7 @@ export class FolderResolver {
   @Mutation((returns) => Folder)
   async updateFolder(
     @Args('id') id: string,
-    @Args('values') values: UpdateFolderInput,
+    @Args('values') values: UpdateFolderInput
   ) {
     return this.folderService.update(id, values);
   }

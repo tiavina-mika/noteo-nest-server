@@ -5,7 +5,6 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
-  "prettier": "npm:prettier-no-newline",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
