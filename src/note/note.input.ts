@@ -2,20 +2,20 @@ import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
 export class CreateNoteInput {
-  @Field()
-  title: string;
+  @Field({ nullable: true })
+  title?: string;
 
   @Field()
   content: string;
 
-  @Field()
-  folder: String;
+  @Field({ nullable: true })
+  folder?: String;
 }
 
 @InputType()
 export class UpdateNoteInput {
-  @Field()
-  title: string;
+  @Field({ nullable: true })
+  title?: string;
 
   @Field()
   content: string;
