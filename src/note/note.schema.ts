@@ -21,8 +21,8 @@ export class Note {
   content: string;
 
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: Folder.name })
-  @Field()
-  folder: Folder;
+  @Field({ nullable: true })
+  folder?: Folder;
 
   @Prop()
   @Field(() => Date, { description: 'Created At' })
