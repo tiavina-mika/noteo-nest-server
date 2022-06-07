@@ -43,7 +43,7 @@ type Note {
 
   """Created At"""
   createdAt: DateTime!
-  folder: Folder!
+  folder: Folder
   id: String!
   title: String!
 
