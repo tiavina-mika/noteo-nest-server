@@ -57,6 +57,7 @@ type Query {
   getNoteById(id: String!): Note!
   getNotes: [Note!]!
   getNotesByFolderId(folderId: String!): [Note!]!
+  getNotesWithoutFolder: [Note!]!
 }
 
 input UpdateFolderInput {

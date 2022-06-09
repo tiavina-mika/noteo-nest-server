@@ -27,6 +27,11 @@ export class NoteResolver {
     return this.noteService.getByFolderId(folderId);
   }
 
+  @Query((returns) => [Note])
+  async getNotesWithoutFolder() {
+    return this.noteService.getNotesWithoutFolder();
+  }
+
   @Mutation((returns) => Note)
   async updateNote(
     @Args('id') id: string,

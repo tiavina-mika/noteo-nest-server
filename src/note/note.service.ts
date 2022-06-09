@@ -34,6 +34,14 @@ export class NoteService {
     return notes;
   }
 
+  async getNotesWithoutFolder(): Promise<Note[]> {
+    const notes = await this.noteModel
+      .find({ folder: { $exists: false } })
+      .exec();
+
+    return notes;
+  }
+
   async update(id: string, values: UpdateNoteInput) {
     return await this.noteModel
       .findByIdAndUpdate(id, values, { new: true })
