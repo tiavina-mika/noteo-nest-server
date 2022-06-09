@@ -20,6 +20,10 @@ export class Note {
   @Field()
   content: string;
 
+  @Prop()
+  @Field({ nullable: true })
+  deleted?: boolean;
+
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: Folder.name })
   @Field({ nullable: true })
   folder?: Folder;

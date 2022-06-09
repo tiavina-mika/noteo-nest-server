@@ -32,6 +32,11 @@ export class NoteResolver {
     return this.noteService.getNotesWithoutFolder();
   }
 
+  @Query((returns) => [Note])
+  async getNotesFromRecycleBin() {
+    return this.noteService.getNotesFromRecycleBin();
+  }
+
   @Mutation((returns) => Note)
   async updateNote(
     @Args('id') id: string,
@@ -43,5 +48,13 @@ export class NoteResolver {
   @Mutation((returns) => Note)
   async deleteNote(@Args('id') id: string) {
     return this.noteService.delete(id);
+  }
+
+  @Mutation((returns) => Note)
+  async moveToRecycleBin(
+    @Args('id') id: string,
+    @Args('value') value: boolean
+  ) {
+    return this.noteService.moveToRecycleBin(id, value);
   }
 }

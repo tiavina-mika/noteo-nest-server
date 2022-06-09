@@ -36,8 +36,17 @@ export class NoteService {
 
   async getNotesWithoutFolder(): Promise<Note[]> {
     const notes = await this.noteModel
-      .find({ folder: { $exists: false } })
+      .find({
+        folder: { $exists: false },
+        deleted: { $ne: true },
+      })
       .exec();
+
+    return notes;
+  }
+
+  async getNotesFromRecycleBin(): Promise<Note[]> {
+    const notes = await this.noteModel.find({ deleted: true }).exec();
 
     return notes;
   }
@@ -54,5 +63,11 @@ export class NoteService {
 
   async deleteMany(ids: any[]) {
     return await this.noteModel.deleteMany({ _id: { $in: ids } });
+  }
+
+  async moveToRecycleBin(id: string, value: boolean) {
+    return await this.noteModel
+      .findByIdAndUpdate(id, { deleted: value }, { new: true })
+      .exec();
   }
 }

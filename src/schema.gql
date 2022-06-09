@@ -34,6 +34,7 @@ type Mutation {
   createNote(values: CreateNoteInput!): Note!
   deleteFolder(id: String!): Folder!
   deleteNote(id: String!): Note!
+  moveToRecycleBin(id: String!, value: Boolean!): Note!
   updateFolder(id: String!, values: UpdateFolderInput!): Folder!
   updateNote(id: String!, values: UpdateNoteInput!): Note!
 }
@@ -43,6 +44,7 @@ type Note {
 
   """Created At"""
   createdAt: DateTime!
+  deleted: Boolean
   folder: Folder
   id: String!
   title: String!
@@ -57,6 +59,7 @@ type Query {
   getNoteById(id: String!): Note!
   getNotes: [Note!]!
   getNotesByFolderId(folderId: String!): [Note!]!
+  getNotesFromRecycleBin: [Note!]!
   getNotesWithoutFolder: [Note!]!
 }
 
