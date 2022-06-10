@@ -51,7 +51,7 @@ export class NoteResolver {
   }
 
   @Mutation((returns) => Note)
-  async moveToRecycleBin(
+  async moveNoteToRecycleBin(
     @Args('id') id: string,
     @Args('value') value: boolean
   ) {
