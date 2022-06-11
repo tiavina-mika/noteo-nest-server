@@ -36,4 +36,11 @@ export class FolderService {
   async delete(id: string) {
     return await this.folderModel.findByIdAndDelete(id).exec();
   }
+
+  async deleteAll() {
+    const data = await this.folderModel.deleteMany({});
+
+    if (data && data.acknowledged) return true;
+    return false;
+  }
 }

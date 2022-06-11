@@ -43,4 +43,9 @@ export class FolderResolver {
     await this.noteService.moveManyToRecycleBinAndDeleteFolder(noteIds);
     return await this.folderService.delete(id);
   }
+
+  @Mutation((returns) => Boolean)
+  async deleteAllFolders() {
+    return this.folderService.deleteAll();
+  }
 }
