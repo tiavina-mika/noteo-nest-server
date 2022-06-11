@@ -66,10 +66,13 @@ export class NoteService {
   }
 
   async deleteMany(ids: any[]) {
-    return await this.noteModel.deleteMany({ _id: { $in: ids } });
+    const data = await this.noteModel.deleteMany({ _id: { $in: ids } });
+
+    if (data && data.acknowledged) return true;
+    return false;
   }
 
-  async deleteManyFromRecycleBin(ids: any[]) {
+  async deleteManyFromRecycleBin(ids: string[]) {
     return await this.noteModel.deleteMany({
       _id: { $in: ids },
       deleted: true,
