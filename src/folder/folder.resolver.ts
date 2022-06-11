@@ -40,7 +40,7 @@ export class FolderResolver {
     const noteIds: any[] = notes.map((note) => note.id);
 
     // delete each notes inside the folder
-    await this.noteService.deleteMany(noteIds);
-    return this.folderService.delete(id);
+    await this.noteService.moveManyToRecycleBinAndDeleteFolder(noteIds);
+    return await this.folderService.delete(id);
   }
 }
