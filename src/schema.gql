@@ -29,6 +29,13 @@ type Folder {
   updatedAt: DateTime!
 }
 
+type FoldersWithNoteCount {
+  id: String!
+  name: String!
+  notesCount: Float!
+  updatedAt: DateTime!
+}
+
 type Mutation {
   createFolder(values: CreateFolderInput!): Folder!
   createNote(values: CreateNoteInput!): Note!
@@ -36,7 +43,6 @@ type Mutation {
   deleteFolder(id: String!): Folder!
   deleteManyFromRecycleBin(ids: [String!]!): Boolean!
   deleteNote(id: String!): Note!
-  deleteNotes(ids: [String!]!): Boolean!
   deleteNotesFromRecycleBin: Boolean!
   moveNoteToRecycleBin(id: String!, value: Boolean!): Note!
   moveNotesToRecycleBin(values: RecycleBinNotesInput!): Boolean!
@@ -61,6 +67,7 @@ type Note {
 type Query {
   getFolderById(id: String!): Folder!
   getFolders: [Folder!]!
+  getFoldersWithNotesCount: [FoldersWithNoteCount!]!
   getNoteById(id: String!): Note!
   getNotes: [Note!]!
   getNotesByFolderId(folderId: String!): [Note!]!
