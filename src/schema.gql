@@ -34,6 +34,7 @@ type Mutation {
   createNote(values: CreateNoteInput!): Note!
   deleteFolder(id: String!): Folder!
   deleteNote(id: String!): Note!
+  deleteNotesFromRecycleBin: Boolean!
   moveNoteToRecycleBin(id: String!, value: Boolean!): Note!
   moveNotesToRecycleBin(values: RecycleBinNotesInput!): Boolean!
   updateFolder(id: String!, values: UpdateFolderInput!): Folder!

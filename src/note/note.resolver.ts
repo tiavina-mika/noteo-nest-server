@@ -59,6 +59,11 @@ export class NoteResolver {
     return this.noteService.moveManyToRecycleBin(values);
   }
 
+  @Mutation((returns) => Boolean)
+  async deleteNotesFromRecycleBin() {
+    return this.noteService.deleteAllFromRecycleBin();
+  }
+
   @Mutation((returns) => Note)
   async moveNoteToRecycleBin(
     @Args('id') id: string,
