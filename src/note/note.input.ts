@@ -20,3 +20,12 @@ export class UpdateNoteInput {
   @Field()
   content: string;
 }
+
+@InputType()
+export class RecycleBinNotesInput {
+  @Field((type) => [String])
+  ids: string[];
+
+  @Field()
+  value: boolean;
+}
