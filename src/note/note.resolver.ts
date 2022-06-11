@@ -1,5 +1,9 @@
 import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
-import { CreateNoteInput, UpdateNoteInput } from './note.input';
+import {
+  CreateNoteInput,
+  RecycleBinNotesInput,
+  UpdateNoteInput,
+} from './note.input';
 import { NoteService } from '../note/note.service';
 import { Note } from './note.schema';
 
@@ -48,6 +52,11 @@ export class NoteResolver {
   @Mutation((returns) => Note)
   async deleteNote(@Args('id') id: string) {
     return this.noteService.delete(id);
+  }
+
+  @Mutation((returns) => Boolean)
+  async moveNotesToRecycleBin(@Args('values') values: RecycleBinNotesInput) {
+    return this.noteService.moveManyToRecycleBin(values);
   }
 
   @Mutation((returns) => Note)

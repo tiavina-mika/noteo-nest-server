@@ -1,6 +1,10 @@
 import { Model } from 'mongoose';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateNoteInput, UpdateNoteInput } from './note.input';
+import {
+  CreateNoteInput,
+  RecycleBinNotesInput,
+  UpdateNoteInput,
+} from './note.input';
 import { Note, NoteDocument } from './note.schema';
 import { InjectModel } from '@nestjs/mongoose';
 
@@ -69,5 +73,18 @@ export class NoteService {
     return await this.noteModel
       .findByIdAndUpdate(id, { deleted: value }, { new: true })
       .exec();
+  }
+
+  async moveManyToRecycleBin(values: RecycleBinNotesInput): Promise<boolean> {
+    const data = await this.noteModel.updateMany(
+      { _id: { $in: values.ids } },
+      { $set: { deleted: values.value } }
+    );
+
+    if (data.acknowledged) {
+      return true;
+    }
+
+    return false;
   }
 }
