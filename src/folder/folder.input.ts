@@ -1,4 +1,4 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
 
 @InputType()
 export class CreateFolderInput {
@@ -10,4 +10,19 @@ export class CreateFolderInput {
 export class UpdateFolderInput {
   @Field()
   name: string;
+}
+
+@ObjectType()
+export class FoldersWithNoteCount {
+  @Field()
+  id: string;
+
+  @Field()
+  notesCount: number;
+
+  @Field()
+  name: string;
+
+  @Field()
+  updatedAt: Date;
 }

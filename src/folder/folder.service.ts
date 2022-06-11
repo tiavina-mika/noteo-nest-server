@@ -1,6 +1,10 @@
 import { Model } from 'mongoose';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateFolderInput, UpdateFolderInput } from './folder.input';
+import {
+  CreateFolderInput,
+  FoldersWithNoteCount,
+  UpdateFolderInput,
+} from './folder.input';
 import { Folder, FolderDocument } from './folder.schema';
 import { InjectModel } from '@nestjs/mongoose';
 
@@ -42,5 +46,37 @@ export class FolderService {
 
     if (data && data.acknowledged) return true;
     return false;
+  }
+
+  async findFoldersWithNotesCount(): Promise<FoldersWithNoteCount[]> {
+    const pipeline = [
+      {
+        $lookup: {
+          from: 'notes', // from the other side collection relationship
+          localField: '_id',
+          foreignField: 'folder',
+          as: 'notes',
+        },
+      },
+      {
+        $sort: {
+          updatedAt: -1,
+        },
+      },
+      {
+        $project: {
+          _id: 0, // remove field _id
+          id: '$_id', // rename field _id to id
+          name: 1,
+          updatedAt: 1,
+          notesCount: {
+            $size: '$notes',
+          },
+        },
+      },
+    ];
+
+    const data = await await this.folderModel.aggregate(pipeline as any);
+    return data;
   }
 }

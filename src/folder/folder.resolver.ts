@@ -1,5 +1,9 @@
 import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
-import { CreateFolderInput, UpdateFolderInput } from '../folder/folder.input';
+import {
+  CreateFolderInput,
+  FoldersWithNoteCount,
+  UpdateFolderInput,
+} from '../folder/folder.input';
 import { FolderService } from './folder.service';
 import { Folder } from './folder.schema';
 import { NoteService } from '../note/note.service';
@@ -47,5 +51,10 @@ export class FolderResolver {
   @Mutation((returns) => Boolean)
   async deleteAllFolders() {
     return this.folderService.deleteAll();
+  }
+
+  @Query((returns) => [FoldersWithNoteCount])
+  async getFoldersWithNotesCount() {
+    return this.folderService.findFoldersWithNotesCount();
   }
 }

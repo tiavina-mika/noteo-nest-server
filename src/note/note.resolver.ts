@@ -82,15 +82,4 @@ export class NoteResolver {
   ) {
     return this.noteService.deleteManyFromRecycleBin(ids);
   }
-
-  @Mutation((returns) => Boolean)
-  async deleteNotes(
-    @Args({
-      name: 'ids',
-      type: () => [String],
-    })
-    ids: string[]
-  ) {
-    return this.noteService.deleteMany(ids);
-  }
 }
