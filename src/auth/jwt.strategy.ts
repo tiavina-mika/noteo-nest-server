@@ -20,9 +20,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtPayload): Promise<any> {
-    console.log('payload: ', payload);
     const user = await this.authService.validateJwtPayload(payload);
-    console.log('user: ', user);
     if (!user) {
       throw new UnauthorizedException(
         'Could not log-in with the provided credentials'
