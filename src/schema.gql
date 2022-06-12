@@ -14,6 +14,13 @@ input CreateNoteInput {
   title: String
 }
 
+input CreateUserInput {
+  email: String!
+  firstName: String!
+  lastName: String
+  password: String!
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -36,16 +43,26 @@ type FoldersWithNoteCount {
   updatedAt: DateTime!
 }
 
+input LoginInput {
+  email: String!
+  password: String!
+}
+
 type Mutation {
   createFolder(values: CreateFolderInput!): Folder!
   createNote(values: CreateNoteInput!): Note!
+  createUser(values: CreateUserInput!): User!
   deleteAllFolders: Boolean!
+  deleteAllUsers: Boolean!
   deleteFolder(id: String!): Folder!
   deleteManyFromRecycleBin(ids: [String!]!): Boolean!
   deleteNote(id: String!): Note!
   deleteNotesFromRecycleBin: Boolean!
+  deleteUser(id: String!): User!
+  login(values: LoginInput!): User!
   moveNoteToRecycleBin(id: String!, value: Boolean!): Note!
   moveNotesToRecycleBin(values: RecycleBinNotesInput!): Boolean!
+  signup(values: CreateUserInput!): User!
   updateFolder(id: String!, values: UpdateFolderInput!): Folder!
   updateNote(id: String!, values: UpdateNoteInput!): Note!
 }
@@ -73,6 +90,8 @@ type Query {
   getNotesByFolderId(folderId: String!): [Note!]!
   getNotesFromRecycleBin: [Note!]!
   getNotesWithoutFolder: [Note!]!
+  getUserById(id: String!): User!
+  getUsers: [User!]!
 }
 
 input RecycleBinNotesInput {
@@ -87,4 +106,19 @@ input UpdateFolderInput {
 input UpdateNoteInput {
   content: String!
   title: String
+}
+
+type User {
+  """Created At"""
+  createdAt: DateTime!
+  email: String!
+  enabled: Boolean!
+  firstName: String!
+  id: String!
+  lastName: String
+  permissions: [String!]!
+
+  """Updated At"""
+  updatedAt: DateTime!
+  username: String!
 }
