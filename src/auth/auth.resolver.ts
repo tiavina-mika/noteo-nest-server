@@ -48,7 +48,6 @@ export class AuthResolver {
   @Query((returns) => User)
   @UseGuards(JwtAuthGuard)
   async profile(@CurrentUser() user: User) {
-    console.log('user: ', user);
     return this.usersService.getById(user.id.toString());
   }
 }

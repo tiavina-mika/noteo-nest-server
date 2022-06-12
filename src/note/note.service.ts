@@ -12,13 +12,18 @@ import { InjectModel } from '@nestjs/mongoose';
 export class NoteService {
   constructor(@InjectModel(Note.name) private noteModel: Model<NoteDocument>) {}
 
-  async create(values: CreateNoteInput): Promise<Note> {
-    const createdNote = new this.noteModel(values);
+  async create(values: CreateNoteInput, userId: string): Promise<Note> {
+    const newValues = { ...values, user: userId };
+    const createdNote = new this.noteModel(newValues);
     return createdNote.save();
   }
 
   async findAll(): Promise<Note[]> {
-    return await this.noteModel.find().populate('folder').exec();
+    return await this.noteModel
+      .find()
+      .populate('folder')
+      .populate('user')
+      .exec();
   }
 
   async getById(id: string): Promise<Note> {

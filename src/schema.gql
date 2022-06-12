@@ -84,6 +84,7 @@ type Note {
 
   """Updated At"""
   updatedAt: DateTime!
+  user: User!
 }
 
 type Query {

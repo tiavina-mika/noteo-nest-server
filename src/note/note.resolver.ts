@@ -6,14 +6,22 @@ import {
 } from './note.input';
 import { NoteService } from '../note/note.service';
 import { Note } from './note.schema';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { User } from 'src/users/users.schema';
+import { CurrentUser } from 'src/decorators/get-current-user.decorator';
 
 @Resolver((of) => Note)
 export class NoteResolver {
   constructor(private noteService: NoteService) {}
 
   @Mutation((returns) => Note)
-  async createNote(@Args('values') values: CreateNoteInput) {
-    return this.noteService.create(values);
+  @UseGuards(JwtAuthGuard)
+  async createNote(
+    @CurrentUser() user: User,
+    @Args('values') values: CreateNoteInput
+  ) {
+    return this.noteService.create(values, user.id.toString());
   }
 
   @Query((returns) => [Note])
