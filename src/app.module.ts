@@ -12,6 +12,8 @@ import { upperDirectiveTransformer } from './common/directive/upper-case.directi
 import { join } from 'path';
 import { MongooseModule } from '@nestjs/mongoose';
 import { FolderModule } from './folder/folder.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -36,6 +38,8 @@ import { FolderModule } from './folder/folder.module';
     MongooseModule.forRoot(process.env.DB_URL),
     NoteModule,
     FolderModule,
+    AuthModule,
+    UsersModule,
     // FolderModule,
   ],
   controllers: [AppController],
