@@ -1,6 +1,8 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import * as bcrypt from 'bcryptjs';
+
 import { transformMongoDBIdentifier, validateEmail } from '../utils/utils';
 
 export type UserDocument = User &
@@ -135,3 +137,17 @@ UserSchema.pre<UserDocument>('save', function (next) {
 UserSchema.set('toJSON', {
   transform: transformMongoDBIdentifier,
 });
+
+UserSchema.methods.checkPassword = (password: string): Promise<boolean> => {
+  const user = this as UserDocument;
+
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(password, user.password, (error, isMatch) => {
+      if (error) {
+        reject(error);
+      }
+
+      resolve(isMatch);
+    });
+  });
+};

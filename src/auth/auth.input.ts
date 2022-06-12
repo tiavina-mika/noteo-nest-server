@@ -1,4 +1,6 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
+import { Schema } from 'mongoose';
+import { User } from '../users/users.schema';
 
 @InputType()
 export class LoginInput {
@@ -7,4 +9,18 @@ export class LoginInput {
 
   @Field()
   password: string;
+}
+
+@ObjectType()
+export class LoginResult {
+  @Field(() => User)
+  user: User;
+  @Field(() => String)
+  token: string;
+}
+
+export interface JwtPayload {
+  email: string;
+  id: Schema.Types.ObjectId;
+  expiration?: Date;
 }
