@@ -1,25 +1,27 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { ConfigModule } from '@nestjs/config';
-
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { NoteModule } from './note/note.module';
-import configuration from './env';
+import { ConfigModule as NestConfigModule } from '@nestjs/config';
+import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 import {
   DirectiveLocation,
   GraphQLDirective,
   GraphQLError,
   GraphQLFormattedError,
 } from 'graphql';
-import { upperDirectiveTransformer } from './common/directive/upper-case.directive';
 import { join } from 'path';
-import { MongooseModule } from '@nestjs/mongoose';
+
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { NoteModule } from './note/note.module';
+import { upperDirectiveTransformer } from './common/directive/upper-case.directive';
 import { FolderModule } from './folder/folder.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { ConfigModule } from './config/config.module';
 import { formatGraphQLErrorMessage } from './utils/errors';
+import configuration from './config/configuration';
+import { ConfigService } from './config/config.service';
 
 @Module({
   imports: [
@@ -74,14 +76,25 @@ import { formatGraphQLErrorMessage } from './utils/errors';
         }
       },
     }),
-    ConfigModule.forRoot({
+    NestConfigModule.forRoot({
       load: [configuration],
     }),
-    MongooseModule.forRoot(process.env.DB_URL),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (
+        configService: ConfigService
+      ): Promise<MongooseModuleOptions> => ({
+        uri: configService.dbUrl,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      }),
+      inject: [ConfigService],
+    }),
     NoteModule,
     FolderModule,
     AuthModule,
     UsersModule,
+    ConfigModule,
     // FolderModule,
   ],
   controllers: [AppController],

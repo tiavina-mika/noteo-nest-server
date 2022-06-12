@@ -48,6 +48,11 @@ input LoginInput {
   password: String!
 }
 
+type LoginResult {
+  token: String!
+  user: User!
+}
+
 type Mutation {
   createFolder(values: CreateFolderInput!): Folder!
   createNote(values: CreateNoteInput!): Note!
@@ -59,7 +64,7 @@ type Mutation {
   deleteNote(id: String!): Note!
   deleteNotesFromRecycleBin: Boolean!
   deleteUser(id: String!): User!
-  login(values: LoginInput!): User!
+  login(values: LoginInput!): LoginResult!
   moveNoteToRecycleBin(id: String!, value: Boolean!): Note!
   moveNotesToRecycleBin(values: RecycleBinNotesInput!): Boolean!
   signup(values: CreateUserInput!): User!
@@ -92,6 +97,7 @@ type Query {
   getNotesWithoutFolder: [Note!]!
   getUserById(id: String!): User!
   getUsers: [User!]!
+  profile: User!
 }
 
 input RecycleBinNotesInput {
