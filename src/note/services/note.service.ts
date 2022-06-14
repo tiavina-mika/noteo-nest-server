@@ -149,4 +149,14 @@ export class NoteService {
       .findOneAndDelete({ $and: [{ _id: id }, { user: userId }] })
       .exec();
   }
+
+  async moveNoteByUserToRecycleBin(id: string, value: boolean, userId: string) {
+    return await this.noteModel
+      .findOneAndUpdate(
+        { $and: [{ _id: id }, { user: userId }] },
+        { $set: { deleted: value } },
+        { new: true }
+      )
+      .exec();
+  }
 }

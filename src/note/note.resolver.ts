@@ -126,4 +126,18 @@ export class NoteResolver {
   async deleteUserNote(@Args('id') id: string, @CurrentUser() user: User) {
     return this.noteService.deleteByUser(id, user.id.toString());
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation((returns) => Note)
+  async moveUserNoteToRecycleBin(
+    @Args('id') id: string,
+    @Args('value') value: boolean,
+    @CurrentUser() user: User
+  ) {
+    return this.noteService.moveNoteByUserToRecycleBin(
+      id,
+      value,
+      user.id.toString()
+    );
+  }
 }
