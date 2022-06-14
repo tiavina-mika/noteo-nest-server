@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { NoteResolver } from './note.resolver';
 import { Note, NoteSchema } from './note.schema';
-import { NoteService } from './note.service';
+import { NoteService } from './services/note.service';
 
 @Module({
   imports: [

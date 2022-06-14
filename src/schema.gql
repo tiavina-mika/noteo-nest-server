@@ -64,12 +64,13 @@ type Mutation {
   deleteNote(id: String!): Note!
   deleteNotesFromRecycleBin: Boolean!
   deleteUser(id: String!): User!
+  deleteUserNote(id: String!): Note!
   login(values: LoginInput!): LoginResult!
   moveNoteToRecycleBin(id: String!, value: Boolean!): Note!
   moveNotesToRecycleBin(values: RecycleBinNotesInput!): Boolean!
   signup(values: CreateUserInput!): User!
   updateFolder(id: String!, values: UpdateFolderInput!): Folder!
-  updateNote(id: String!, values: UpdateNoteInput!): Note!
+  updateUserNote(id: String!, values: UpdateNoteInput!): Note!
 }
 
 type Note {
@@ -97,6 +98,7 @@ type Query {
   getNotesFromRecycleBin: [Note!]!
   getNotesWithoutFolder: [Note!]!
   getUserById(id: String!): User!
+  getUserNoteById(id: String!): Note!
   getUsers: [User!]!
   profile: User!
 }

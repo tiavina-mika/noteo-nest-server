@@ -6,7 +6,7 @@ import {
 } from '../folder/folder.input';
 import { FolderService } from './folder.service';
 import { Folder } from './folder.schema';
-import { NoteService } from '../note/note.service';
+import { NoteService } from '../note/services/note.service';
 
 @Resolver((of) => Folder)
 export class FolderResolver {

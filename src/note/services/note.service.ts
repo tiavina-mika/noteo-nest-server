@@ -4,8 +4,8 @@ import {
   CreateNoteInput,
   RecycleBinNotesInput,
   UpdateNoteInput,
-} from './note.input';
-import { Note, NoteDocument } from './note.schema';
+} from '../note.input';
+import { Note, NoteDocument } from '../note.schema';
 import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
@@ -47,8 +47,6 @@ export class NoteService {
     const notes = await this.noteModel
       .find({
         $or: [{ folder: { $eq: null } }, { folder: { $exists: false } }],
-        // folder: { $eq: null },
-        // folder: { $exists: false },
         deleted: { $ne: true },
       })
       .exec();
@@ -60,12 +58,6 @@ export class NoteService {
     const notes = await this.noteModel.find({ deleted: true }).exec();
 
     return notes;
-  }
-
-  async update(id: string, values: UpdateNoteInput) {
-    return await this.noteModel
-      .findByIdAndUpdate(id, values, { new: true })
-      .exec();
   }
 
   async delete(id: string) {
@@ -125,5 +117,36 @@ export class NoteService {
     }
 
     return false;
+  }
+
+  // -------------------------------------------- //
+  // ------------------- USER ------------------- //
+  // -------------------------------------------- //
+  // get one note by the current user
+  async getByIdAndUser(id: string, userId: string): Promise<Note> {
+    const note = await this.noteModel
+      .findOne({ $and: [{ _id: id }, { user: userId }] })
+      .exec();
+
+    if (!note) {
+      throw new NotFoundException('Note not found');
+    }
+    return note;
+  }
+
+  async updateByUser(id: string, userId: string, values: UpdateNoteInput) {
+    return await this.noteModel
+      .findOneAndUpdate(
+        { $and: [{ _id: id }, { user: userId }] },
+        { $set: values },
+        { new: true }
+      )
+      .exec();
+  }
+
+  async deleteByUser(id: string, userId: string) {
+    return await this.noteModel
+      .findOneAndDelete({ $and: [{ _id: id }, { user: userId }] })
+      .exec();
   }
 }
