@@ -150,7 +150,7 @@ export class NoteService {
       .exec();
   }
 
-  async moveNoteByUserToRecycleBin(id: string, value: boolean, userId: string) {
+  async moveToRecycleBinByUser(id: string, value: boolean, userId: string) {
     return await this.noteModel
       .findOneAndUpdate(
         { $and: [{ _id: id }, { user: userId }] },
@@ -158,5 +158,22 @@ export class NoteService {
         { new: true }
       )
       .exec();
+  }
+
+  async moveManyToRecycleBinAndDeleteFolderByUser(
+    ids: string[],
+    value: boolean,
+    userId: string
+  ): Promise<boolean> {
+    const data = await this.noteModel.updateMany(
+      { $and: [{ _id: { $in: ids } }, { user: userId }] },
+      { $set: { deleted: value, folder: null } }
+    );
+
+    if (data.acknowledged) {
+      return true;
+    }
+
+    return false;
   }
 }

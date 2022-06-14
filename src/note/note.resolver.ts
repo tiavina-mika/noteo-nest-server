@@ -134,8 +134,26 @@ export class NoteResolver {
     @Args('value') value: boolean,
     @CurrentUser() user: User
   ) {
-    return this.noteService.moveNoteByUserToRecycleBin(
+    return this.noteService.moveToRecycleBinByUser(
       id,
+      value,
+      user.id.toString()
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation((returns) => Boolean)
+  async moveManyUserNotesToRecycleBin(
+    @Args({
+      name: 'ids',
+      type: () => [String],
+    })
+    ids: string[],
+    @Args('value') value: boolean,
+    @CurrentUser() user: User
+  ) {
+    return this.noteService.moveManyToRecycleBinAndDeleteFolderByUser(
+      ids,
       value,
       user.id.toString()
     );
