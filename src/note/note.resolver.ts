@@ -158,4 +158,16 @@ export class NoteResolver {
       user.id.toString()
     );
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation((returns) => Boolean)
+  async moveAllUserNotesToRecycleBin(
+    @Args('value') value: boolean,
+    @CurrentUser() user: User
+  ) {
+    return this.noteService.moveAllToRecycleBinAndDeleteFolderByUser(
+      value,
+      user.id.toString()
+    );
+  }
 }

@@ -66,6 +66,7 @@ type Mutation {
   deleteUser(id: String!): User!
   deleteUserNote(id: String!): Note!
   login(values: LoginInput!): LoginResult!
+  moveAllUserNotesToRecycleBin(value: Boolean!): Boolean!
   moveManyUserNotesToRecycleBin(ids: [String!]!, value: Boolean!): Boolean!
   moveNoteToRecycleBin(id: String!, value: Boolean!): Note!
   moveNotesToRecycleBin(values: RecycleBinNotesInput!): Boolean!

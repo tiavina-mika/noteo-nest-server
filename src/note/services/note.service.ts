@@ -176,4 +176,20 @@ export class NoteService {
 
     return false;
   }
+
+  async moveAllToRecycleBinAndDeleteFolderByUser(
+    value: boolean,
+    userId: string
+  ): Promise<boolean> {
+    const data = await this.noteModel.updateMany(
+      { $and: [{ deleted: { $ne: value } }, { user: userId }] },
+      { $set: { deleted: value, folder: null } }
+    );
+
+    if (data.acknowledged) {
+      return true;
+    }
+
+    return false;
+  }
 }
