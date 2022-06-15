@@ -170,4 +170,23 @@ export class NoteResolver {
       user.id.toString()
     );
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation((returns) => Boolean)
+  async deleteManyUserNotesByUser(
+    @Args({
+      name: 'ids',
+      type: () => [String],
+    })
+    ids: string[],
+    @CurrentUser() user: User
+  ) {
+    return this.noteService.deleteManyByUser(ids, user.id.toString());
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation((returns) => Boolean)
+  async deleteAllNotesByUser(@CurrentUser() user: User) {
+    return this.noteService.deleteAllByUser(user.id.toString());
+  }
 }

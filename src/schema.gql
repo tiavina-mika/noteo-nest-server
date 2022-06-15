@@ -58,9 +58,11 @@ type Mutation {
   createNote(values: CreateNoteInput!): Note!
   createUser(values: CreateUserInput!): User!
   deleteAllFolders: Boolean!
+  deleteAllNotesByUser: Boolean!
   deleteAllUsers: Boolean!
   deleteFolder(id: String!): Folder!
   deleteManyFromRecycleBin(ids: [String!]!): Boolean!
+  deleteManyUserNotesByUser(ids: [String!]!): Boolean!
   deleteNote(id: String!): Note!
   deleteNotesFromRecycleBin: Boolean!
   deleteUser(id: String!): User!

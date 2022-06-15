@@ -192,4 +192,20 @@ export class NoteService {
 
     return false;
   }
+
+  async deleteManyByUser(ids: string[], userId: string) {
+    const data = await this.noteModel.deleteMany({
+      $and: [{ _id: { $in: ids } }, { user: userId }],
+    });
+
+    if (data && data.acknowledged) return true;
+    return false;
+  }
+
+  async deleteAllByUser(userId: string) {
+    const data = await this.noteModel.deleteMany({ user: userId });
+
+    if (data && data.acknowledged) return true;
+    return false;
+  }
 }
