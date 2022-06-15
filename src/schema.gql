@@ -34,6 +34,7 @@ type Folder {
 
   """Updated At"""
   updatedAt: DateTime!
+  user: User!
 }
 
 type FoldersWithNoteCount {
@@ -58,14 +59,17 @@ type Mutation {
   createNote(values: CreateNoteInput!): Note!
   createUser(values: CreateUserInput!): User!
   deleteAllFolders: Boolean!
+  deleteAllFoldersByUser: Boolean!
   deleteAllNotesByUser: Boolean!
   deleteAllUsers: Boolean!
   deleteFolder(id: String!): Folder!
   deleteManyFromRecycleBin(ids: [String!]!): Boolean!
+  deleteManyUserFoldersByUser(ids: [String!]!): Boolean!
   deleteManyUserNotesByUser(ids: [String!]!): Boolean!
   deleteNote(id: String!): Note!
   deleteNotesFromRecycleBin: Boolean!
   deleteUser(id: String!): User!
+  deleteUserFolder(id: String!): Folder!
   deleteUserNote(id: String!): Note!
   login(values: LoginInput!): LoginResult!
   moveAllUserNotesToRecycleBin(value: Boolean!): Boolean!
@@ -75,6 +79,7 @@ type Mutation {
   moveUserNoteToRecycleBin(id: String!, value: Boolean!): Note!
   signup(values: CreateUserInput!): User!
   updateFolder(id: String!, values: UpdateFolderInput!): Folder!
+  updateUserFolder(id: String!, values: UpdateFolderInput!): Folder!
   updateUserNote(id: String!, values: UpdateNoteInput!): Note!
 }
 
@@ -103,6 +108,9 @@ type Query {
   getNotesFromRecycleBin: [Note!]!
   getNotesWithoutFolder: [Note!]!
   getUserById(id: String!): User!
+  getUserFolderById(id: String!): Folder!
+  getUserFolders: [Folder!]!
+  getUserFoldersWithNotesCount: [FoldersWithNoteCount!]!
   getUserNoteById(id: String!): Note!
   getUsers: [User!]!
   profile: User!

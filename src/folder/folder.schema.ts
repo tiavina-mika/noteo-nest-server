@@ -2,6 +2,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { transformMongoDBIdentifier } from 'src/utils/utils';
+import { User } from 'src/users/users.schema';
 
 export type FolderDocument = Folder & Document;
 
@@ -14,6 +15,10 @@ export class Folder {
   @Prop()
   @Field()
   name: string;
+
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: User.name })
+  @Field()
+  user: User;
 
   @Prop()
   @Field(() => Date, { description: 'Created At' })

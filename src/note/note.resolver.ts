@@ -15,15 +15,6 @@ import { CurrentUser } from 'src/decorators/get-current-user.decorator';
 export class NoteResolver {
   constructor(private noteService: NoteService) {}
 
-  @Mutation((returns) => Note)
-  @UseGuards(JwtAuthGuard)
-  async createNote(
-    @CurrentUser() user: User,
-    @Args('values') values: CreateNoteInput
-  ) {
-    return this.noteService.create(values, user.id.toString());
-  }
-
   @UseGuards(JwtAuthGuard)
   @Query((returns) => [Note])
   async getNotes() {
@@ -53,15 +44,6 @@ export class NoteResolver {
   async getNotesFromRecycleBin() {
     return this.noteService.getNotesFromRecycleBin();
   }
-
-  // @UseGuards(JwtAuthGuard)
-  // @Mutation((returns) => Note)
-  // async updateNote(
-  //   @Args('id') id: string,
-  //   @Args('values') values: UpdateNoteInput
-  // ) {
-  //   return this.noteService.update(id, values);
-  // }
 
   @UseGuards(JwtAuthGuard)
   @Mutation((returns) => Note)
@@ -105,6 +87,15 @@ export class NoteResolver {
   // -------------------------------------------- //
   // ------------------- USER ------------------- //
   // -------------------------------------------- //
+  @Mutation((returns) => Note)
+  @UseGuards(JwtAuthGuard)
+  async createNote(
+    @CurrentUser() user: User,
+    @Args('values') values: CreateNoteInput
+  ) {
+    return this.noteService.create(values, user.id.toString());
+  }
+
   @UseGuards(JwtAuthGuard)
   @Query((returns) => Note)
   async getUserNoteById(@Args('id') id: string, @CurrentUser() user: User) {
