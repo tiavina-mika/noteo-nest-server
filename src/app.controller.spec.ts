@@ -1,4 +1,4 @@
-import { NoteService } from './note/note.service';
+import { NoteService } from './note/services/note.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';

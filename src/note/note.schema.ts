@@ -3,6 +3,7 @@ import { Document, Schema as MongooseSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Folder } from '../folder/folder.schema';
 import { transformMongoDBIdentifier } from '../utils/utils';
+import { User } from 'src/users/users.schema';
 
 export type NoteDocument = Note & Document;
 
@@ -27,6 +28,10 @@ export class Note {
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: Folder.name })
   @Field({ nullable: true })
   folder?: Folder;
+
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: User.name })
+  @Field()
+  user: User;
 
   @Prop()
   @Field(() => Date, { description: 'Created At' })
