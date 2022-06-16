@@ -112,26 +112,6 @@ UserSchema.pre<UserDocument>('save', function (next) {
   this.username = lowerCasedEmail;
 
   next();
-
-  // Make sure not to rehash the password if it is already hashed
-  // if (!user.isModified('password')) {
-  //   return next();
-  // }
-
-  // Generate a salt and use it to hash the user's password
-  // bcrypt.genSalt(10, (genSaltError, salt) => {
-  //   if (genSaltError) {
-  //     return next(genSaltError);
-  //   }
-
-  //   bcrypt.hash(user.password, salt, (err, hash) => {
-  //     if (err) {
-  //       return next(err);
-  //     }
-  //     user.password = hash;
-  //     next();
-  //   });
-  // });
 });
 
 UserSchema.set('toJSON', {
