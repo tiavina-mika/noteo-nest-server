@@ -22,5 +22,6 @@ export class LoginResult {
 export interface JwtPayload {
   email: string;
   id: Schema.Types.ObjectId;
-  expiration?: Date;
+  // expiration?: Date;
+  expiresIn?: string;
 }

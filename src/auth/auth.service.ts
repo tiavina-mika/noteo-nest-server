@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
-import { ConfigService } from 'src/config/config.service';
 import { User } from 'src/users/users.schema';
 
 import { UsersService } from '../users/users.service';
@@ -50,16 +50,12 @@ export class AuthService {
   }
 
   createJwt(user: User): { data: JwtPayload; token: string } {
-    const expiresIn = this.configService.jwtExpiresIn;
-    let expiration: Date | undefined;
-    if (expiresIn) {
-      expiration = new Date();
-      expiration.setTime(expiration.getTime() + expiresIn * 1000);
-    }
+    const expiresIn = this.configService.get<string>('auth.jwt.accessToken.expirationTime');
+
     const data: JwtPayload = {
       email: user.email,
       id: user.id,
-      expiration,
+      expiresIn,
     };
 
     const jwt = this._jwtService.sign(data);

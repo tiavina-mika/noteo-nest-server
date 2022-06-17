@@ -1,7 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 // import { UseGuards } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
-import { JwtService } from '@nestjs/jwt';
 
 import { AuthService } from '../auth/auth.service';
 import { LoginInput, LoginResult } from './auth.input';
@@ -17,7 +16,6 @@ export class AuthResolver {
   constructor(
     private authService: AuthService,
     private usersService: UsersService,
-    private jwtService: JwtService
   ) {}
 
   // @UseGuards(LocalAuthGuard)
