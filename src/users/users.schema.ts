@@ -42,13 +42,14 @@ export class User {
   @Prop({
     required: true,
     unique: true,
+    lowercase: true,
+    trim: true,
     validate: { validator: validateEmail },
   })
   email: string;
 
   @Field(() => String)
   @Prop({
-    // required: true,
     unique: true,
   })
   username?: string;
@@ -57,11 +58,17 @@ export class User {
   @Prop({
     type: String,
     required: true,
+    lowercase: true,
+    trim: true,
   })
   firstName: string;
 
   @Field(() => String, { nullable: true })
-  @Prop()
+  @Prop({
+    type: String,
+    lowercase: true,
+    trim: true,
+  })
   lastName?: string;
 
   @Prop({ required: true })
@@ -73,16 +80,6 @@ export class User {
     // required: true,
   })
   permissions?: string[];
-
-  // @Field(() => String)
-  // @Prop({
-  //   type: String,
-  //   unique: true,
-  // })
-  // lowercaseEmail: string;
-
-  // @Prop({ type: PasswordResetSchema })
-  // passwordReset: typeof PasswordResetSchema;
 
   @Field(() => Boolean)
   @Prop({
@@ -110,6 +107,11 @@ UserSchema.pre<UserDocument>('save', function (next) {
   const lowerCasedEmail = this.email.toLowerCase();
   this.email = lowerCasedEmail;
   this.username = lowerCasedEmail;
+  this.firstName = this.firstName.toLowerCase();
+
+  if (this.lastName) {
+    this.lastName = this.lastName.toLowerCase();
+  }
 
   next();
 });
