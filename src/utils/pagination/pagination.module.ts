@@ -3,8 +3,8 @@ import { PaginationService } from './service/pagination.service';
 
 @Global()
 @Module({
-    providers: [PaginationService],
-    exports: [PaginationService],
-    imports: [],
+  providers: [PaginationService],
+  exports: [PaginationService],
+  imports: [],
 })
 export class PaginationModule {}

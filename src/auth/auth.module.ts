@@ -17,8 +17,12 @@ import configuration from 'src/config/configuration';
     }),
     JwtModule.registerAsync({
       useFactory: async (configService: ConfigService): Promise<any> => ({
-        secret: configService.get<string>("auth.jwt.accessToken.secretKey"),
-        signOptions: { expiresIn: configService.get<string>("auth.jwt.accessToken.expirationTime") },
+        secret: configService.get<string>('auth.jwt.accessToken.secretKey'),
+        signOptions: {
+          expiresIn: configService.get<string>(
+            'auth.jwt.accessToken.expirationTime'
+          ),
+        },
       }),
       inject: [ConfigService],
     }),

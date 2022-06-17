@@ -4,8 +4,8 @@ import { DebuggerService } from './service/debugger.service';
 
 @Global()
 @Module({
-    providers: [DebuggerOptionService, DebuggerService],
-    exports: [DebuggerOptionService, DebuggerService],
-    imports: [],
+  providers: [DebuggerOptionService, DebuggerService],
+  exports: [DebuggerOptionService, DebuggerService],
+  imports: [],
 })
 export class DebuggerModule {}

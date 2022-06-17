@@ -3,14 +3,14 @@ import { defaultFieldResolver, GraphQLSchema } from 'graphql';
 
 export function upperDirectiveTransformer(
   schema: GraphQLSchema,
-  directiveName: string,
+  directiveName: string
 ) {
   return mapSchema(schema, {
-    [MapperKind.OBJECT_FIELD]: fieldConfig => {
+    [MapperKind.OBJECT_FIELD]: (fieldConfig) => {
       const upperDirective = getDirective(
         schema,
         fieldConfig,
-        directiveName,
+        directiveName
       )?.[0];
 
       if (upperDirective) {

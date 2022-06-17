@@ -50,7 +50,9 @@ export class AuthService {
   }
 
   createJwt(user: User): { data: JwtPayload; token: string } {
-    const expiresIn = this.configService.get<string>('auth.jwt.accessToken.expirationTime');
+    const expiresIn = this.configService.get<string>(
+      'auth.jwt.accessToken.expirationTime'
+    );
 
     const data: JwtPayload = {
       email: user.email,

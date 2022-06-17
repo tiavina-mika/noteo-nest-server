@@ -11,15 +11,15 @@ import { UseGuards } from '@nestjs/common';
 import { CurrentUser } from 'src/decorators/get-current-user.decorator';
 import { JwtAuthGuard } from './jwt-auth.guard';
 
-@Resolver((of) => User)
+@Resolver(() => User)
 export class AuthResolver {
   constructor(
     private authService: AuthService,
-    private usersService: UsersService,
+    private usersService: UsersService
   ) {}
 
   // @UseGuards(LocalAuthGuard)
-  @Mutation((returns) => LoginResult)
+  @Mutation(() => LoginResult)
   async login(@Args('values') values: LoginInput) {
     const user = await this.authService.validateUserByPassword(values);
 
@@ -34,7 +34,7 @@ export class AuthResolver {
     };
   }
 
-  @Mutation((returns) => User)
+  @Mutation(() => User)
   async signup(@Args('values') values: CreateUserInput) {
     const newValues = {
       ...values,
@@ -43,7 +43,7 @@ export class AuthResolver {
     return this.usersService.create(newValues);
   }
 
-  @Query((returns) => User)
+  @Query(() => User)
   @UseGuards(JwtAuthGuard)
   async profile(@CurrentUser() user: User) {
     return this.usersService.getById(user.id.toString());

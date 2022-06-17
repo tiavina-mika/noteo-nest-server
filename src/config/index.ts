@@ -7,11 +7,11 @@ import FileConfig from './file.config';
 import MiddlewareConfig from './middleware.config';
 
 export default [
-    AppConfig,
-    AuthConfig,
-    DatabaseConfig,
-    HelperConfig,
-    UserConfig,
-    MiddlewareConfig,
-    FileConfig,
+  AppConfig,
+  AuthConfig,
+  DatabaseConfig,
+  HelperConfig,
+  UserConfig,
+  MiddlewareConfig,
+  FileConfig,
 ];

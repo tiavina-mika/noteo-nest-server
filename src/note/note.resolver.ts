@@ -11,60 +11,60 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { User } from 'src/users/users.schema';
 import { CurrentUser } from 'src/decorators/get-current-user.decorator';
 
-@Resolver((of) => Note)
+@Resolver(() => Note)
 export class NoteResolver {
   constructor(private noteService: NoteService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Query((returns) => [Note])
+  @Query(() => [Note])
   async getNotes() {
     return this.noteService.findAll();
   }
 
   @UseGuards(JwtAuthGuard)
-  @Query((returns) => Note)
+  @Query(() => Note)
   async getNoteById(@Args('id') id: string) {
     return this.noteService.getById(id);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Query((returns) => [Note])
+  @Query(() => [Note])
   async getNotesByFolderId(@Args('folderId') folderId: string) {
     return this.noteService.getByFolderId(folderId);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Query((returns) => [Note])
+  @Query(() => [Note])
   async getNotesWithoutFolder() {
     return this.noteService.getNotesWithoutFolder();
   }
 
   @UseGuards(JwtAuthGuard)
-  @Query((returns) => [Note])
+  @Query(() => [Note])
   async getNotesFromRecycleBin() {
     return this.noteService.getNotesFromRecycleBin();
   }
 
   @UseGuards(JwtAuthGuard)
-  @Mutation((returns) => Note)
+  @Mutation(() => Note)
   async deleteNote(@Args('id') id: string) {
     return this.noteService.delete(id);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Mutation((returns) => Boolean)
+  @Mutation(() => Boolean)
   async moveNotesToRecycleBin(@Args('values') values: RecycleBinNotesInput) {
     return this.noteService.moveManyToRecycleBin(values);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Mutation((returns) => Boolean)
+  @Mutation(() => Boolean)
   async deleteNotesFromRecycleBin() {
     return this.noteService.deleteAllFromRecycleBin();
   }
 
   @UseGuards(JwtAuthGuard)
-  @Mutation((returns) => Note)
+  @Mutation(() => Note)
   async moveNoteToRecycleBin(
     @Args('id') id: string,
     @Args('value') value: boolean
@@ -73,7 +73,7 @@ export class NoteResolver {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Mutation((returns) => Boolean)
+  @Mutation(() => Boolean)
   async deleteManyFromRecycleBin(
     @Args({
       name: 'ids',
@@ -87,7 +87,7 @@ export class NoteResolver {
   // -------------------------------------------- //
   // ------------------- USER ------------------- //
   // -------------------------------------------- //
-  @Mutation((returns) => Note)
+  @Mutation(() => Note)
   @UseGuards(JwtAuthGuard)
   async createNote(
     @CurrentUser() user: User,
@@ -97,13 +97,13 @@ export class NoteResolver {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Query((returns) => Note)
+  @Query(() => Note)
   async getUserNoteById(@Args('id') id: string, @CurrentUser() user: User) {
     return this.noteService.getByIdAndUser(id, user.id.toString());
   }
 
   @UseGuards(JwtAuthGuard)
-  @Mutation((returns) => Note)
+  @Mutation(() => Note)
   async updateUserNote(
     @Args('id') id: string,
     @CurrentUser() user: User,
@@ -113,13 +113,13 @@ export class NoteResolver {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Mutation((returns) => Note)
+  @Mutation(() => Note)
   async deleteUserNote(@Args('id') id: string, @CurrentUser() user: User) {
     return this.noteService.deleteByUser(id, user.id.toString());
   }
 
   @UseGuards(JwtAuthGuard)
-  @Mutation((returns) => Note)
+  @Mutation(() => Note)
   async moveUserNoteToRecycleBin(
     @Args('id') id: string,
     @Args('value') value: boolean,
@@ -133,7 +133,7 @@ export class NoteResolver {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Mutation((returns) => Boolean)
+  @Mutation(() => Boolean)
   async moveManyUserNotesToRecycleBin(
     @Args({
       name: 'ids',
@@ -151,7 +151,7 @@ export class NoteResolver {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Mutation((returns) => Boolean)
+  @Mutation(() => Boolean)
   async moveAllUserNotesToRecycleBin(
     @Args('value') value: boolean,
     @CurrentUser() user: User
@@ -163,7 +163,7 @@ export class NoteResolver {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Mutation((returns) => Boolean)
+  @Mutation(() => Boolean)
   async deleteManyUserNotesByUser(
     @Args({
       name: 'ids',
@@ -176,7 +176,7 @@ export class NoteResolver {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Mutation((returns) => Boolean)
+  @Mutation(() => Boolean)
   async deleteAllNotesByUser(@CurrentUser() user: User) {
     return this.noteService.deleteAllByUser(user.id.toString());
   }

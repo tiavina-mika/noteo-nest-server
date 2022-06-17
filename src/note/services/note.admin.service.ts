@@ -1,10 +1,6 @@
 import { Model } from 'mongoose';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import {
-  CreateNoteInput,
-  RecycleBinNotesInput,
-  UpdateNoteInput,
-} from '../note.input';
+import { RecycleBinNotesInput } from '../note.input';
 import { Note, NoteDocument } from '../note.schema';
 import { InjectModel } from '@nestjs/mongoose';
 

@@ -12,24 +12,24 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CurrentUser } from 'src/decorators/get-current-user.decorator';
 import { User } from 'src/users/users.schema';
 
-@Resolver((of) => Folder)
+@Resolver(() => Folder)
 export class FolderResolver {
   constructor(
     private folderService: FolderService,
     private noteService: NoteService
   ) {}
 
-  @Query((returns) => [Folder])
+  @Query(() => [Folder])
   async getFolders() {
     return this.folderService.findAll();
   }
 
-  @Query((returns) => Folder)
+  @Query(() => Folder)
   async getFolderById(@Args('id') id: string) {
     return this.folderService.getById(id);
   }
 
-  @Mutation((returns) => Folder)
+  @Mutation(() => Folder)
   async updateFolder(
     @Args('id') id: string,
     @Args('values') values: UpdateFolderInput
@@ -37,7 +37,7 @@ export class FolderResolver {
     return this.folderService.update(id, values);
   }
 
-  @Mutation((returns) => Folder)
+  @Mutation(() => Folder)
   async deleteFolder(@Args('id') id: string) {
     const notes = await this.noteService.getByFolderId(id);
     const noteIds: any[] = notes.map((note) => note.id);
@@ -47,12 +47,12 @@ export class FolderResolver {
     return await this.folderService.delete(id);
   }
 
-  @Mutation((returns) => Boolean)
+  @Mutation(() => Boolean)
   async deleteAllFolders() {
     return this.folderService.deleteAll();
   }
 
-  @Query((returns) => [FoldersWithNoteCount])
+  @Query(() => [FoldersWithNoteCount])
   async getFoldersWithNotesCount() {
     return this.folderService.findFoldersWithNotesCount();
   }
@@ -60,7 +60,7 @@ export class FolderResolver {
   // -------------------------------------------- //
   // ------------------- USER ------------------- //
   // -------------------------------------------- //
-  @Mutation((returns) => Folder)
+  @Mutation(() => Folder)
   @UseGuards(JwtAuthGuard)
   async createFolder(
     @CurrentUser() user: User,
@@ -70,25 +70,25 @@ export class FolderResolver {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Query((returns) => Folder)
+  @Query(() => Folder)
   async getUserFolderById(@Args('id') id: string, @CurrentUser() user: User) {
     return this.folderService.getByIdAndUser(id, user.id.toString());
   }
 
   @UseGuards(JwtAuthGuard)
-  @Query((returns) => [FoldersWithNoteCount])
+  @Query(() => [FoldersWithNoteCount])
   async getUserFoldersWithNotesCount(@CurrentUser() user: User) {
     return this.folderService.findUserFoldersWithNotesCount(user.id.toString());
   }
 
   @UseGuards(JwtAuthGuard)
-  @Query((returns) => [Folder])
+  @Query(() => [Folder])
   async getUserFolders(@CurrentUser() user: User) {
     return this.folderService.findAllByUser(user.id.toString());
   }
 
   @UseGuards(JwtAuthGuard)
-  @Mutation((returns) => Folder)
+  @Mutation(() => Folder)
   async updateUserFolder(
     @Args('id') id: string,
     @CurrentUser() user: User,
@@ -98,13 +98,13 @@ export class FolderResolver {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Mutation((returns) => Folder)
+  @Mutation(() => Folder)
   async deleteUserFolder(@Args('id') id: string, @CurrentUser() user: User) {
     return this.folderService.deleteByUser(id, user.id.toString());
   }
 
   @UseGuards(JwtAuthGuard)
-  @Mutation((returns) => Boolean)
+  @Mutation(() => Boolean)
   async deleteManyUserFoldersByUser(
     @Args({
       name: 'ids',
@@ -117,7 +117,7 @@ export class FolderResolver {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Mutation((returns) => Boolean)
+  @Mutation(() => Boolean)
   async deleteAllFoldersByUser(@CurrentUser() user: User) {
     return this.folderService.deleteAllByUser(user.id.toString());
   }

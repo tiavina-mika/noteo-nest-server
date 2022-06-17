@@ -1,9 +1,9 @@
 import {
-    HttpStatus,
-    Module,
-    UnprocessableEntityException,
-    ValidationError,
-    ValidationPipe,
+  HttpStatus,
+  Module,
+  UnprocessableEntityException,
+  ValidationError,
+  ValidationPipe,
 } from '@nestjs/common';
 import { APP_PIPE } from '@nestjs/core';
 import { DebuggerService } from 'src/debugger/service/debugger.service';
@@ -22,49 +22,49 @@ import { SkipConstraint } from './validation/request.skip.validation';
 import { StringOrNumberOrBooleanConstraint } from './validation/request.string-or-number-or-boolean.validation';
 
 @Module({
-    controllers: [],
-    providers: [
-        {
-            provide: APP_PIPE,
-            inject: [DebuggerService],
-            useFactory: (debuggerService: DebuggerService) => {
-                return new ValidationPipe({
-                    transform: true,
-                    skipNullProperties: false,
-                    skipUndefinedProperties: false,
-                    skipMissingProperties: false,
-                    errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
-                    exceptionFactory: async (errors: ValidationError[]) => {
-                        debuggerService.error(
-                            'Request validation error',
-                            'RequestModule',
-                            'exceptionFactory',
-                            errors
-                        );
+  controllers: [],
+  providers: [
+    {
+      provide: APP_PIPE,
+      inject: [DebuggerService],
+      useFactory: (debuggerService: DebuggerService) => {
+        return new ValidationPipe({
+          transform: true,
+          skipNullProperties: false,
+          skipUndefinedProperties: false,
+          skipMissingProperties: false,
+          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+          exceptionFactory: async (errors: ValidationError[]) => {
+            debuggerService.error(
+              'Request validation error',
+              'RequestModule',
+              'exceptionFactory',
+              errors
+            );
 
-                        return new UnprocessableEntityException({
-                            statusCode:
-                                ENUM_REQUEST_STATUS_CODE_ERROR.REQUEST_VALIDATION_ERROR,
-                            message: 'http.clientError.unprocessableEntity',
-                            errors,
-                        });
-                    },
-                });
-            },
-        },
-        IsPasswordStrongConstraint,
-        IsPasswordMediumConstraint,
-        IsPasswordWeakConstraint,
-        IsStartWithConstraint,
-        MaxGreaterThanEqualConstraint,
-        MaxGreaterThanConstraint,
-        MinGreaterThanEqualConstraint,
-        MinGreaterThanConstraint,
-        SkipConstraint,
-        StringOrNumberOrBooleanConstraint,
-        SafeStringConstraint,
-        IsOnlyDigitsConstraint,
-    ],
-    imports: [],
+            return new UnprocessableEntityException({
+              statusCode:
+                ENUM_REQUEST_STATUS_CODE_ERROR.REQUEST_VALIDATION_ERROR,
+              message: 'http.clientError.unprocessableEntity',
+              errors,
+            });
+          },
+        });
+      },
+    },
+    IsPasswordStrongConstraint,
+    IsPasswordMediumConstraint,
+    IsPasswordWeakConstraint,
+    IsStartWithConstraint,
+    MaxGreaterThanEqualConstraint,
+    MaxGreaterThanConstraint,
+    MinGreaterThanEqualConstraint,
+    MinGreaterThanConstraint,
+    SkipConstraint,
+    StringOrNumberOrBooleanConstraint,
+    SafeStringConstraint,
+    IsOnlyDigitsConstraint,
+  ],
+  imports: [],
 })
 export class RequestModule {}

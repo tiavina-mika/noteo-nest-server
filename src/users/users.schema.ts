@@ -60,7 +60,7 @@ export class User {
   })
   firstName: string;
 
-  @Field((type) => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   @Prop()
   lastName?: string;
 

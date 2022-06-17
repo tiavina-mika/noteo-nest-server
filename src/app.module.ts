@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ConfigModule as NestConfigModule } from '@nestjs/config';
-import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
+import { MongooseModule } from '@nestjs/mongoose';
 import {
   DirectiveLocation,
   GraphQLDirective,
@@ -92,14 +92,14 @@ import Configs from 'src/config/index';
       inject: [DebuggerOptionService],
       imports: [DebuggerModule],
       useFactory: (loggerService: DebuggerOptionService) =>
-          loggerService.createLogger(),
+        loggerService.createLogger(),
     }),
     MongooseModule.forRootAsync({
-        // connectionName: DATABASE_CONNECTION_NAME,
-        inject: [DatabaseService],
-        imports: [DatabaseModule],
-        useFactory: (databaseService: DatabaseService) =>
-            databaseService.createMongooseOptions(),
+      // connectionName: DATABASE_CONNECTION_NAME,
+      inject: [DatabaseService],
+      imports: [DatabaseModule],
+      useFactory: (databaseService: DatabaseService) =>
+        databaseService.createMongooseOptions(),
     }),
     HelperModule,
     AuthModule,

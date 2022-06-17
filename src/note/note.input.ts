@@ -23,7 +23,7 @@ export class UpdateNoteInput {
 
 @InputType()
 export class RecycleBinNotesInput {
-  @Field((type) => [String])
+  @Field(() => [String])
   ids: string[];
 
   @Field()
