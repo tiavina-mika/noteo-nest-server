@@ -12,8 +12,6 @@ import {
 import { WinstonModule } from 'nest-winston';
 import { join } from 'path';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { NoteModule } from './note/note.module';
 import { upperDirectiveTransformer } from './common/directive/upper-case.directive';
 import { FolderModule } from './folder/folder.module';
@@ -110,7 +108,7 @@ import Configs from 'src/config/index';
     RequestModule,
     PaginationModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
