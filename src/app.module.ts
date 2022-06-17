@@ -9,6 +9,7 @@ import {
   GraphQLError,
   GraphQLFormattedError,
 } from 'graphql';
+import { WinstonModule } from 'nest-winston';
 import { join } from 'path';
 
 import { AppController } from './app.controller';
@@ -18,13 +19,24 @@ import { upperDirectiveTransformer } from './common/directive/upper-case.directi
 import { FolderModule } from './folder/folder.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { ConfigModule } from './config/config.module';
 import { formatGraphQLErrorMessage } from './utils/errors';
-import configuration from './config/configuration';
-import { ConfigService } from './config/config.service';
+import { DatabaseService } from './database/service/database.service';
+import { DatabaseModule } from './database/database.module';
+import { DebuggerOptionService } from './debugger/service/debugger.option.service';
+import { DebuggerModule } from './debugger/debugger.module';
+import { HelperModule } from './utils/helper/helper.module';
+import { RequestModule } from './utils/request/request.module';
+import { PaginationModule } from './utils/pagination/pagination.module';
+import Configs from 'src/config/index';
 
 @Module({
   imports: [
+    NestConfigModule.forRoot({
+      load: Configs,
+      isGlobal: true,
+      cache: true,
+      ignoreEnvFile: true,
+    }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
@@ -76,29 +88,29 @@ import { ConfigService } from './config/config.service';
         }
       },
     }),
-    NestConfigModule.forRoot({
-      load: [configuration],
+    WinstonModule.forRootAsync({
+      inject: [DebuggerOptionService],
+      imports: [DebuggerModule],
+      useFactory: (loggerService: DebuggerOptionService) =>
+          loggerService.createLogger(),
     }),
     MongooseModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: async (
-        configService: ConfigService
-      ): Promise<MongooseModuleOptions> => ({
-        uri: configService.dbUrl,
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      }),
-      inject: [ConfigService],
+        // connectionName: DATABASE_CONNECTION_NAME,
+        inject: [DatabaseService],
+        imports: [DatabaseModule],
+        useFactory: (databaseService: DatabaseService) =>
+            databaseService.createMongooseOptions(),
     }),
-    NoteModule,
-    FolderModule,
+    HelperModule,
     AuthModule,
     UsersModule,
-    ConfigModule,
-    // FolderModule,
+    NoteModule,
+    FolderModule,
+    DebuggerModule,
+    RequestModule,
+    PaginationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
-  // providers: [AppService, FolderService],
 })
 export class AppModule {}
