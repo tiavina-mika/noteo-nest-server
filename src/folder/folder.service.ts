@@ -63,12 +63,6 @@ export class FolderService {
     return folder;
   }
 
-  async update(id: string, values: UpdateFolderInput) {
-    return await this.folderModel
-      .findByIdAndUpdate(id, values, { new: true })
-      .exec();
-  }
-
   async delete(id: string) {
     return await this.folderModel.findByIdAndDelete(id).exec();
   }

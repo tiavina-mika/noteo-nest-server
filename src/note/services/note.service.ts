@@ -158,13 +158,14 @@ export class NoteService {
   }
 
   async moveToRecycleBinByUser(id: string, value: boolean, userId: string) {
-    return await this.noteModel
-      .findOneAndUpdate(
-        { $and: [{ _id: id }, { user: userId }] },
-        { $set: { deleted: value } },
-        { new: true }
-      )
-      .exec();
+    const note: NoteDocument = await this.noteModel.findById(id);
+
+    if (note && note.user.toString() !== userId) {
+      throw new ForbiddenException('Forbidden');
+    }
+
+    note.deleted = value;
+    return note.save();
   }
 
   async moveManyToRecycleBinAndDeleteFolderByUser(

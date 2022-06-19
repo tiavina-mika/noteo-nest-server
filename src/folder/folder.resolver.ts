@@ -30,14 +30,6 @@ export class FolderResolver {
   }
 
   @Mutation(() => Folder)
-  async updateFolder(
-    @Args('id') id: string,
-    @Args('values') values: UpdateFolderInput
-  ) {
-    return this.folderService.update(id, values);
-  }
-
-  @Mutation(() => Folder)
   async deleteFolder(@Args('id') id: string) {
     const notes = await this.noteService.getByFolderId(id);
     const noteIds: any[] = notes.map((note) => note.id);

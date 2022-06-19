@@ -78,7 +78,6 @@ type Mutation {
   moveNotesToRecycleBin(values: RecycleBinNotesInput!): Boolean!
   moveUserNoteToRecycleBin(id: String!, value: Boolean!): Note!
   signup(values: CreateUserInput!): User!
-  updateFolder(id: String!, values: UpdateFolderInput!): Folder!
   updateUserFolder(id: String!, values: UpdateFolderInput!): Folder!
   updateUserNote(id: String!, values: UpdateNoteInput!): Note!
 }
