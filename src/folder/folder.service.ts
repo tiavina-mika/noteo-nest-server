@@ -1,5 +1,9 @@
 import mongoose, { Model } from 'mongoose';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException
+} from '@nestjs/common';
 import {
   CreateFolderInput,
   FoldersWithNoteCount,
@@ -120,13 +124,15 @@ export class FolderService {
   }
 
   async updateByUser(id: string, userId: string, values: UpdateFolderInput) {
-    return await this.folderModel
-      .findOneAndUpdate(
-        { $and: [{ _id: id }, { user: userId }] },
-        { $set: values },
-        { new: true }
-      )
-      .exec();
+    const folder: FolderDocument = await this.folderModel.findById(id);
+
+    if (folder.user.toString() !== userId) {
+      throw new ForbiddenException('Forbidden');
+    }
+
+    folder.name = values.name;
+
+    return folder.save();
   }
 
   async deleteByUser(id: string, userId: string) {
