@@ -1,5 +1,9 @@
 import { Model } from 'mongoose';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import {
   CreateNoteInput,
   RecycleBinNotesInput,
@@ -135,13 +139,16 @@ export class NoteService {
   }
 
   async updateByUser(id: string, userId: string, values: UpdateNoteInput) {
-    return await this.noteModel
-      .findOneAndUpdate(
-        { $and: [{ _id: id }, { user: userId }] },
-        { $set: values },
-        { new: true }
-      )
-      .exec();
+    const note: NoteDocument = await this.noteModel.findById(id);
+
+    if (note.user.toString() !== userId) {
+      throw new ForbiddenException('Forbidden');
+    }
+
+    note.title = values.title;
+    note.content = values.content;
+
+    return note.save();
   }
 
   async deleteByUser(id: string, userId: string) {
