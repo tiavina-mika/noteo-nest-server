@@ -2,7 +2,7 @@ import mongoose, { Model } from 'mongoose';
 import {
   ForbiddenException,
   Injectable,
-  NotFoundException
+  NotFoundException,
 } from '@nestjs/common';
 import {
   CreateFolderInput,
