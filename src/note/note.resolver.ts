@@ -97,6 +97,13 @@ export class NoteResolver {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Query(() => [Note])
+  async getNotesByUser(@CurrentUser() user: User) {
+    const notes = await this.noteService.findAll({ user: user.id.toString() });
+    return notes;
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Query(() => Note)
   async getUserNoteById(@Args('id') id: string, @CurrentUser() user: User) {
     return this.noteService.getByIdAndUser(id, user.id.toString());

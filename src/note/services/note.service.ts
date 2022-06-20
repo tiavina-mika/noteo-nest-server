@@ -11,6 +11,7 @@ import {
 } from '../note.input';
 import { Note, NoteDocument } from '../note.schema';
 import { InjectModel } from '@nestjs/mongoose';
+import { IDatabaseFindAllOptions } from 'src/database/database.interface';
 
 @Injectable()
 export class NoteService {
@@ -22,12 +23,20 @@ export class NoteService {
     return createdNote.save();
   }
 
-  async findAll(): Promise<Note[]> {
-    return await this.noteModel
-      .find()
-      .populate('folder')
-      .populate('user')
-      .exec();
+  async findAll(
+    find?: Record<string, any>,
+    options?: IDatabaseFindAllOptions
+  ): Promise<Note[]> {
+    const notes = this.noteModel.find(find).populate('folder').populate('user');
+
+    if (options && options.limit !== undefined && options.skip !== undefined) {
+      notes.limit(options.limit).skip(options.skip);
+    }
+
+    if (options && options.sort) {
+      notes.sort(options.sort);
+    }
+    return notes.exec();
   }
 
   async getById(id: string): Promise<Note> {

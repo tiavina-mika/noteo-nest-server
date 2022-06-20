@@ -104,6 +104,7 @@ type Query {
   getNoteById(id: String!): Note!
   getNotes: [Note!]!
   getNotesByFolderId(folderId: String!): [Note!]!
+  getNotesByUser: [Note!]!
   getNotesFromRecycleBin: [Note!]!
   getNotesWithoutFolder: [Note!]!
   getUserById(id: String!): User!
