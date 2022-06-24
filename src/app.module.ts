@@ -26,6 +26,8 @@ import { HelperModule } from './utils/helper/helper.module';
 import { RequestModule } from './utils/request/request.module';
 import { PaginationModule } from './utils/pagination/pagination.module';
 import Configs from 'src/config/index';
+import { MessageModule } from './message/message.module';
+import { ErrorModule } from './utils/error/error.module';
 
 @Module({
   imports: [
@@ -104,6 +106,8 @@ import Configs from 'src/config/index';
     UsersModule,
     NoteModule,
     FolderModule,
+    ErrorModule,
+    MessageModule,
     DebuggerModule,
     RequestModule,
     PaginationModule,

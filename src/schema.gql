@@ -97,6 +97,25 @@ type Note {
   user: User!
 }
 
+input NoteListInput {
+  availableSearch: [String!] = ["title", "content"]
+  availableSort: [String!]
+  page: Float!
+  perPage: Float!
+  search: String
+  sort: String!
+}
+
+type PaginatedNotesResult {
+  availableSearch: [String!]!
+  availableSort: [String!]!
+  currentPage: Float!
+  data: [Note!]!
+  perPage: Float!
+  totalData: Float!
+  totalPage: Float!
+}
+
 type Query {
   getFolderById(id: String!): Folder!
   getFolders: [Folder!]!
@@ -104,7 +123,7 @@ type Query {
   getNoteById(id: String!): Note!
   getNotes: [Note!]!
   getNotesByFolderId(folderId: String!): [Note!]!
-  getNotesByUser: [Note!]!
+  getNotesByUser(options: NoteListInput!): PaginatedNotesResult!
   getNotesFromRecycleBin: [Note!]!
   getNotesWithoutFolder: [Note!]!
   getUserById(id: String!): User!

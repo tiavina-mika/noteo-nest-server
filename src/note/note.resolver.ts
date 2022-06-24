@@ -1,6 +1,8 @@
 import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
 import {
   CreateNoteInput,
+  NoteListInput,
+  PaginatedNotesResult,
   RecycleBinNotesInput,
   UpdateNoteInput,
 } from './note.input';
@@ -10,10 +12,15 @@ import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { User } from 'src/users/users.schema';
 import { CurrentUser } from 'src/decorators/get-current-user.decorator';
+import { PaginationService } from 'src/utils/pagination/service/pagination.service';
+import { IResponsePaging } from 'src/utils/response/response.interface';
 
 @Resolver(() => Note)
 export class NoteResolver {
-  constructor(private noteService: NoteService) {}
+  constructor(
+    private noteService: NoteService,
+    private readonly paginationService: PaginationService
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Query(() => [Note])
@@ -96,11 +103,62 @@ export class NoteResolver {
     return this.noteService.create(values, user.id.toString());
   }
 
+  // @UseGuards(JwtAuthGuard)
+  // @Query(() => [Note])
+  // async getNotesByUser(@CurrentUser() user: User) {
+  //   const notes = await this.noteService.findAll({ user: user.id.toString() });
+  //   return notes;
+  // }
+
   @UseGuards(JwtAuthGuard)
-  @Query(() => [Note])
-  async getNotesByUser(@CurrentUser() user: User) {
-    const notes = await this.noteService.findAll({ user: user.id.toString() });
-    return notes;
+  @Query(() => PaginatedNotesResult)
+  async getNotesByUser(
+    @CurrentUser() user: User,
+    @Args('options') options: NoteListInput
+  ): Promise<IResponsePaging> {
+    const { page, perPage, sort, search, availableSort, availableSearch } =
+      options;
+    const skip: number = await this.paginationService.skip(page, perPage);
+    const find: Record<string, any> = {
+      user: user.id.toString(),
+    };
+
+    if (search) {
+      find['$or'] = [
+        {
+          title: {
+            $regex: new RegExp(search),
+            $options: 'i',
+          },
+        },
+        {
+          content: {
+            $regex: new RegExp(search),
+            $options: 'i',
+          },
+        },
+      ];
+    }
+    const notes: Note[] = await this.noteService.findAll(find, {
+      limit: perPage,
+      skip: skip,
+      sort,
+    });
+    const totalData: number = await this.noteService.getTotal(find);
+    const totalPage: number = await this.paginationService.totalPage(
+      totalData,
+      perPage
+    );
+
+    return {
+      totalData,
+      totalPage,
+      currentPage: page,
+      perPage,
+      availableSearch,
+      availableSort,
+      data: notes,
+    };
   }
 
   @UseGuards(JwtAuthGuard)

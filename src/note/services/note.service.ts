@@ -39,6 +39,10 @@ export class NoteService {
     return notes.exec();
   }
 
+  async getTotal(find?: Record<string, any>): Promise<number> {
+    return this.noteModel.countDocuments(find);
+  }
+
   async getById(id: string): Promise<Note> {
     const note = await this.noteModel.findById(id).exec();
     if (!note) {
