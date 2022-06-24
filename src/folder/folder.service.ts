@@ -91,9 +91,7 @@ export class FolderService {
   ): Promise<FoldersWithNoteCountResult[]> {
     const folderPipeline = [
       {
-        $match: {
-          ...find,
-        },
+        $match: find,
       },
       { $sort: options.sort },
       { $skip: options.skip },
@@ -114,9 +112,7 @@ export class FolderService {
   ): Promise<number> {
     const folderPipeline = [
       {
-        $match: {
-          ...find,
-        },
+        $match: find,
       },
     ];
 
@@ -127,7 +123,8 @@ export class FolderService {
     ];
 
     const data = await this.folderModel.aggregate(newPipeline as any);
-    return data[0].total;
+    const total = data.length > 0 ? data[0].total : 0;
+    return total;
   }
 
   async findAllByUser(userId: string): Promise<Folder[]> {
