@@ -6,11 +6,12 @@ import {
 } from '@nestjs/common';
 import {
   CreateFolderInput,
-  FoldersWithNoteCount,
+  FoldersWithNoteCountResult,
   UpdateFolderInput,
 } from './folder.input';
 import { Folder, FolderDocument } from './folder.schema';
 import { InjectModel } from '@nestjs/mongoose';
+import { IDatabaseFindAllOptions } from 'src/database/database.interface';
 
 const foldersWithNotesCountPipeline = [
   {
@@ -74,7 +75,7 @@ export class FolderService {
     return false;
   }
 
-  async findFoldersWithNotesCount(): Promise<FoldersWithNoteCount[]> {
+  async findFoldersWithNotesCount(): Promise<FoldersWithNoteCountResult[]> {
     const data = await this.folderModel.aggregate(
       foldersWithNotesCountPipeline as any
     );
@@ -85,17 +86,48 @@ export class FolderService {
   // ------------------- USER ------------------- //
   // -------------------------------------------- //
   async findUserFoldersWithNotesCount(
-    userId: string
-  ): Promise<FoldersWithNoteCount[]> {
-    const userPipeline = {
-      $match: {
-        $expr: { $eq: ['$user', new mongoose.Types.ObjectId(userId)] },
+    find?: Record<string, any>,
+    options?: IDatabaseFindAllOptions
+  ): Promise<FoldersWithNoteCountResult[]> {
+    const folderPipeline = [
+      {
+        $match: {
+          ...find,
+        },
       },
-    };
-    const newPipeline: any = [userPipeline, ...foldersWithNotesCountPipeline];
+      { $sort: options.sort },
+      { $skip: options.skip },
+      { $limit: options.limit },
+    ];
+
+    const newPipeline: any = [
+      ...folderPipeline,
+      ...foldersWithNotesCountPipeline,
+    ];
 
     const data = await this.folderModel.aggregate(newPipeline as any);
     return data;
+  }
+
+  async getUserFoldersWithNotesCountTotal(
+    find?: Record<string, any>
+  ): Promise<number> {
+    const folderPipeline = [
+      {
+        $match: {
+          ...find,
+        },
+      },
+    ];
+
+    const newPipeline: any = [
+      ...folderPipeline,
+      ...foldersWithNotesCountPipeline,
+      { $count: 'total' },
+    ];
+
+    const data = await this.folderModel.aggregate(newPipeline as any);
+    return data[0].total;
   }
 
   async findAllByUser(userId: string): Promise<Folder[]> {

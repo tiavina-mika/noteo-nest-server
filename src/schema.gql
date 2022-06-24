@@ -37,7 +37,16 @@ type Folder {
   user: User!
 }
 
-type FoldersWithNoteCount {
+input FolderListInput {
+  availableSearch: [String!] = ["name"]
+  availableSort: [String!]
+  page: Float!
+  perPage: Float!
+  search: String
+  sort: String!
+}
+
+type FoldersWithNoteCountResult {
   id: String!
   name: String!
   notesCount: Float!
@@ -106,6 +115,16 @@ input NoteListInput {
   sort: String!
 }
 
+type PaginatedFoldersResult {
+  availableSearch: [String!]!
+  availableSort: [String!]!
+  currentPage: Float!
+  data: [FoldersWithNoteCountResult!]!
+  perPage: Float!
+  totalData: Float!
+  totalPage: Float!
+}
+
 type PaginatedNotesResult {
   availableSearch: [String!]!
   availableSort: [String!]!
@@ -119,7 +138,7 @@ type PaginatedNotesResult {
 type Query {
   getFolderById(id: String!): Folder!
   getFolders: [Folder!]!
-  getFoldersWithNotesCount: [FoldersWithNoteCount!]!
+  getFoldersWithNotesCount: [FoldersWithNoteCountResult!]!
   getNoteById(id: String!): Note!
   getNotes: [Note!]!
   getNotesByFolderId(folderId: String!): [Note!]!
@@ -129,7 +148,7 @@ type Query {
   getUserById(id: String!): User!
   getUserFolderById(id: String!): Folder!
   getUserFolders: [Folder!]!
-  getUserFoldersWithNotesCount: [FoldersWithNoteCount!]!
+  getUserFoldersWithNotesCount(options: FolderListInput!): PaginatedFoldersResult!
   getUserNoteById(id: String!): Note!
   getUsers: [User!]!
   profile: User!

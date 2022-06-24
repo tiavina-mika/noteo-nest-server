@@ -1,1 +1,4 @@
-export const DB_URL = process.env.DB_URL || 'mongodb://localhost/nest';
+export enum ENUM_STATUS_CODE_ERROR {
+  NOT_FOUND_ERROR = 5400,
+  EXISTS_ERROR = 5401,
+}
