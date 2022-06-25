@@ -33,8 +33,8 @@ export function ResponseDefaultInterceptor(
       const request: Request = ctx.getRequest<Request>();
       const { headers } = request;
 
-      const appLanguages: string[] = headers['x-custom-lang']
-        ? ctx.getRequest().i18nLang.split(',')
+      const appLanguage: string = headers['x-custom-lang']
+        ? ctx.getRequest().i18n.lang
         : undefined;
 
       return next.handle().pipe(
@@ -46,7 +46,7 @@ export function ResponseDefaultInterceptor(
           const data: Record<string, any> = await response;
           const message: string | IMessage =
             (await this.messageService.get(messagePath, {
-              appLanguages,
+              appLanguage,
             })) || (await this.messageService.get('response.default'));
 
           return {

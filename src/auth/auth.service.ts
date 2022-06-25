@@ -1,7 +1,12 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
+import { ENUM_STATUS_CODE_ERROR } from 'src/constants';
 import { User } from 'src/users/users.schema';
 
 import { UsersService } from '../users/users.service';
@@ -19,10 +24,18 @@ export class AuthService {
     const user = await this.usersService.findOneByEmail(
       values.email.toLowerCase()
     );
+
+    if (!user) {
+      throw new NotFoundException({
+        statusCode: ENUM_STATUS_CODE_ERROR.NOT_FOUND_ERROR,
+        message: 'user.error.notFound',
+      });
+    }
+
     const isValidPassword = bcrypt.compareSync(values.password, user.password);
 
     if (!isValidPassword) {
-      throw new BadRequestException('Password does not match');
+      throw new BadRequestException('auth.error.incorrectPassword');
     }
 
     return user;

@@ -6,8 +6,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import {
   DirectiveLocation,
   GraphQLDirective,
-  GraphQLError,
-  GraphQLFormattedError,
+  // GraphQLError,
+  // GraphQLFormattedError,
 } from 'graphql';
 import { WinstonModule } from 'nest-winston';
 import { join } from 'path';
@@ -17,7 +17,7 @@ import { upperDirectiveTransformer } from './common/directive/upper-case.directi
 import { FolderModule } from './folder/folder.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { formatGraphQLErrorMessage } from './utils/errors';
+// import { formatGraphQLErrorMessage } from './utils/errors';
 import { DatabaseService } from './database/service/database.service';
 import { DatabaseModule } from './database/database.module';
 import { DebuggerOptionService } from './debugger/service/debugger.option.service';
@@ -51,42 +51,45 @@ import { ErrorModule } from './utils/error/error.module';
           }),
         ],
       },
-      formatError: (error: GraphQLError) => {
-        const customError = formatGraphQLErrorMessage(error);
-        if (customError) {
-          new Error(customError);
-        } else if (error.message === 'VALIDATION_ERROR') {
-          const extensions = {
-            code: 'VALIDATION_ERROR',
-            errors: [],
-          };
+      // formatError: (error: GraphQLError) => {
+      //   console.log('error: ', error);
+      //   const customError = formatGraphQLErrorMessage(error);
+      //   if (customError) {
+      //     console.log('customError: ', customError);
+      //     new Error(customError);
+      //   } else if (error.message === 'VALIDATION_ERROR') {
+      //     console.log("validation error");
+      //     const extensions = {
+      //       code: 'VALIDATION_ERROR',
+      //       errors: [],
+      //     };
 
-          Object.keys(error.extensions.invalidArgs).forEach((key) => {
-            const constraints = [];
-            Object.keys(error.extensions.invalidArgs[key].constraints).forEach(
-              (_key) => {
-                constraints.push(
-                  error.extensions.invalidArgs[key].constraints[_key]
-                );
-              }
-            );
+      //     Object.keys(error.extensions.invalidArgs).forEach((key) => {
+      //       const constraints = [];
+      //       Object.keys(error.extensions.invalidArgs[key].constraints).forEach(
+      //         (_key) => {
+      //           constraints.push(
+      //             error.extensions.invalidArgs[key].constraints[_key]
+      //           );
+      //         }
+      //       );
 
-            extensions.errors.push({
-              field: error.extensions.invalidArgs[key].property,
-              errors: constraints,
-            });
-          });
+      //       extensions.errors.push({
+      //         field: error.extensions.invalidArgs[key].property,
+      //         errors: constraints,
+      //       });
+      //     });
 
-          const graphQLFormattedError: GraphQLFormattedError = {
-            message: 'VALIDATION_ERROR',
-            extensions: extensions,
-          };
+      //     const graphQLFormattedError: GraphQLFormattedError = {
+      //       message: 'VALIDATION_ERROR',
+      //       extensions: extensions,
+      //     };
 
-          return graphQLFormattedError;
-        } else {
-          return error;
-        }
-      },
+      //     return graphQLFormattedError;
+      //   } else {
+      //     return error;
+      //   }
+      // },
     }),
     WinstonModule.forRootAsync({
       inject: [DebuggerOptionService],
