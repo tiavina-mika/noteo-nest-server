@@ -76,6 +76,9 @@ export class NoteListInput implements PaginationListAbstract {
   @PaginationAvailableSort(NOTE_DEFAULT_AVAILABLE_SORT)
   @Field(() => [String], { nullable: true })
   readonly availableSort?: string[];
+
+  @Field(() => Boolean, { nullable: true })
+  readonly withFolder?: boolean;
 }
 
 @ObjectType()

@@ -8,7 +8,6 @@ import { transformMongoDBIdentifier, validateEmail } from '../utils/utils';
 export type UserDocument = User &
   Document & {
     password: string;
-    // lowercaseEmail: string;
     passwordReset?: {
       token: string;
       expiration: Date;

@@ -116,28 +116,73 @@ export class NoteResolver {
     @CurrentUser() user: User,
     @Args('options') options: NoteListInput
   ): Promise<IResponsePaging> {
-    const { page, perPage, sort, search, availableSort, availableSearch } =
-      options;
+    const {
+      page,
+      perPage,
+      sort,
+      search,
+      availableSort,
+      availableSearch,
+      withFolder,
+    } = options;
     const skip: number = await this.paginationService.skip(page, perPage);
     const find: Record<string, any> = {
       user: user.id.toString(),
+      deleted: { $ne: true },
     };
 
+    if (typeof withFolder === 'boolean') {
+      if (!withFolder) {
+        find['$and'] = [
+          ...(find['$and'] || []),
+          {
+            $or: [{ folder: { $eq: null } }, { folder: { $exists: false } }],
+          },
+        ];
+      } else {
+        find['$and'] = [
+          ...(find['$and'] || []),
+          {
+            $or: [{ folder: { $ne: null } }, { folder: { $exists: true } }],
+          },
+        ];
+      }
+    }
+
     if (search) {
-      find['$or'] = [
+      find['$and'] = [
+        ...(find['$and'] || []),
         {
-          title: {
-            $regex: new RegExp(search),
-            $options: 'i',
-          },
-        },
-        {
-          content: {
-            $regex: new RegExp(search),
-            $options: 'i',
-          },
+          $or: [
+            {
+              title: {
+                $regex: new RegExp(search),
+                $options: 'i',
+              },
+            },
+            {
+              content: {
+                $regex: new RegExp(search),
+                $options: 'i',
+              },
+            },
+          ],
         },
       ];
+      // find['$or'] = [
+      //   {
+      //     title: {
+      //       $regex: new RegExp(search),
+      //       $options: 'i',
+      //     },
+      //   },
+      //   {
+      //     content: {
+      //       $regex: new RegExp(search),
+      //       $options: 'i',
+      //     },
+      //   },
+      // ];
     }
     const notes: Note[] = await this.noteService.findAll(find, {
       limit: perPage,
