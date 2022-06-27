@@ -7,9 +7,10 @@ import { LoginInput, LoginResult } from './auth.input';
 import { User } from '../users/users.schema';
 import { CreateUserInput } from '../users/users.input';
 import { UsersService } from '../users/users.service';
-import { UseGuards } from '@nestjs/common';
+import { BadRequestException, UseGuards } from '@nestjs/common';
 import { CurrentUser } from 'src/decorators/get-current-user.decorator';
 import { JwtAuthGuard } from './jwt-auth.guard';
+import { ENUM_USER_STATUS_CODE_ERROR } from 'src/users/users.constant';
 
 @Resolver(() => User)
 export class AuthResolver {
@@ -18,7 +19,6 @@ export class AuthResolver {
     private usersService: UsersService
   ) {}
 
-  // @UseGuards(LocalAuthGuard)
   @Mutation(() => LoginResult)
   async login(@Args('values') values: LoginInput) {
     const user = await this.authService.validateUserByPassword(values);
@@ -36,10 +36,19 @@ export class AuthResolver {
 
   @Mutation(() => User)
   async signup(@Args('values') values: CreateUserInput) {
+    const user = await this.usersService.findOneByEmail(values.email);
+
+    if (user) {
+      throw new BadRequestException({
+        statusCode: ENUM_USER_STATUS_CODE_ERROR.USER_EXISTS_ERROR,
+        message: 'user.error.exist',
+      });
+    }
     const newValues = {
       ...values,
       password: bcrypt.hashSync(values.password, 10),
     };
+
     return this.usersService.create(newValues);
   }
 

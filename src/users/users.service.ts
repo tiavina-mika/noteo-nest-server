@@ -23,8 +23,8 @@ export class UsersService {
     const user = await this.userModel
       .findOne({ email: email.toLowerCase() })
       .exec();
-    if (user) return user;
-    return undefined;
+
+    return user;
   }
 
   async create(values: CreateUserInput): Promise<User> {
