@@ -53,7 +53,8 @@ export class AuthService {
     const user = await this.usersService.findOneByEmail(payload.email);
 
     // Ensure the user exists and their account isn't disabled
-    if (user && user.enabled) {
+    if (user) {
+      // if (user && user.enabled) {
       user.updatedAt = new Date();
       user.save();
       return user;
