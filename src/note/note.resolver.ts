@@ -169,25 +169,11 @@ export class NoteResolver {
           ],
         },
       ];
-      // find['$or'] = [
-      //   {
-      //     title: {
-      //       $regex: new RegExp(search),
-      //       $options: 'i',
-      //     },
-      //   },
-      //   {
-      //     content: {
-      //       $regex: new RegExp(search),
-      //       $options: 'i',
-      //     },
-      //   },
-      // ];
     }
     const notes: Note[] = await this.noteService.findAll(find, {
       limit: perPage,
       skip: skip,
-      sort,
+      sort: sort,
     });
     const totalData: number = await this.noteService.getTotal(find);
     const totalPage: number = await this.paginationService.totalPage(
